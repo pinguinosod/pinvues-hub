@@ -22,11 +22,11 @@
       <h4>{{ numberA }} {{ operation }} {{ numberB }}</h4>
     </div>
     <div v-show="running" class="text-center">
-      Your response: <input type="text"
+      Your response: <input type="number"
                             v-on:keyup.13="submitValue"
-                            maxlength="4"
                             ref="yourResponse"
-                            v-model="yourResponse">
+                            v-model="yourResponse"
+                            id="yourResponse">
       <button class="btn btn-primary" @click="submitValue">
         <i class="fas fa-check-circle"></i>
         <span class="d-none d-sm-inline-block">Submit</span>
@@ -166,8 +166,15 @@
 </script>
 
 <style scoped>
-  input[type=text] {
+  input#yourResponse {
     width: 40px;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+      /* display: none; <- Crashes Chrome on hover */
+      -webkit-appearance: none;
+      margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
   }
 
   .fade-enter-active {
