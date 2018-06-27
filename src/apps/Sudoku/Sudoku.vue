@@ -143,12 +143,12 @@
         }
       },
       fillMatrixZeros: function() {
-          for (var x = 0; x < 9; x++) {
-            this.matrix[x] = [];
-            for (var y = 0; y < 9; y++) {
-              this.matrix[x][y] = 0;
-            }
+        for (var x = 0; x < 9; x++) {
+          this.matrix[x] = [];
+          for (var y = 0; y < 9; y++) {
+            this.matrix[x][y] = 0;
           }
+        }
       },
       fillMatrixRand: function() {
         this.fillMatrixZeros(); // fill the matrix with zeros

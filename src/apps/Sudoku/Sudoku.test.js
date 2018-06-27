@@ -536,34 +536,11 @@ describe('Sudoku: fillMatrixRand() method', () => {
     }
   });
 
-  // output Matrix
+  // output Matrix to console
   var cmp = mount(Sudoku);
   cmp.vm.fillMatrixRand();
   for (var x = 0; x < 9; x++) { // fill the matrix with zeros
     console.log(cmp.vm.matrix[x]);
   }
 
-});
-
-describe('Sudoku: fillMatrixRand() method', () => {
-  // Fills the matrix with 0s
-  beforeEach(() => {
-    cmp.vm.fillMatrixZeros();
-  });
-
-  it('Matrix filled', () => {
-    for (var j = 0; j < 9; j++) {
-      for (var i = 0; i < 9; i++) {
-        expect(cmp.vm.matrix[j][i]).not.toBeNull();
-      }
-    }
-  });
-
-  it('Matrix filled with 0s', () => {
-    for (var j = 0; j < 9; j++) {
-      for (var i = 0; i < 9; i++) {
-        expect(cmp.vm.matrix[j][i]).toBe(0);
-      }
-    }
-  });
 });
