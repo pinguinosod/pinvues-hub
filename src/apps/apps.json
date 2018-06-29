@@ -10,5 +10,11 @@
     "description": "Type the characters as fast as posible.",
     "author": "PinguinoSod",
     "url": "fastype"
+  },
+  {
+    "name": "Sudoku",
+    "description": "Generates a sudoku puzzle.",
+    "author": "PinguinoSod",
+    "url": "sudoku"
   }
 ]

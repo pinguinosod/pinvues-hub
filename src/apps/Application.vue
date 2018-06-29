@@ -15,6 +15,7 @@
 <script>
   import arithmeticus from './Arithmeticus/Arithmeticus.vue'
   import fastype from './Fastype/Fastype.vue'
+  import sudoku from './Sudoku/Sudoku.vue'
 
   export default {
     data () {
@@ -29,7 +30,8 @@
     },
     components: {
       'app-arithmeticus' : arithmeticus,
-      'app-fastype' : fastype
+      'app-fastype' : fastype,
+      'app-sudoku' : sudoku
     }
   }
 </script>

@@ -20,42 +20,15 @@ testMatrix[7] = [0,0,7,0,5,0,6,0,0];
 testMatrix[8] = [0,0,0,0,0,0,5,0,1];
 
 describe('Sudoku: Initialization', () => {
-  it('running is false', () => {
-    expect(cmp.vm.running).toBe(false);
-  });
-
-  it('finished is false', () => {
-    expect(cmp.vm.finished).toBe(false);
-  });
 
   it('posibleNumbers are [1,2,3,4,5,6,7,8,9]', () => {
     expect(cmp.vm.posibleNumbers).toEqual([1,2,3,4,5,6,7,8,9]);
   });
-});
 
-describe('Sudoku: start() method', () => {
-  beforeEach(() => {
-    cmp.vm.start();
+  it('matrix is empty', () => {
+    expect(cmp.vm.matrix).toEqual([]);
   });
 
-  it('running sets to true', () => {
-    expect(cmp.vm.running).toBeTruthy();
-  });
-});
-
-describe('Sudoku: stop() method', () => {
-  beforeEach(() => {
-    cmp.vm.start();
-    cmp.vm.stop();
-  });
-
-  it('running is false', () => {
-    expect(cmp.vm.running).toBeFalsy();
-  });
-
-  it('finished sets to true', () => {
-    expect(cmp.vm.finished).toBeTruthy();
-  });
 });
 
 describe('Sudoku: getAcceptableValues() method', () => {
@@ -108,6 +81,19 @@ describe('Sudoku: getRandPosible() method', () => {
 
   it('Returns false if empty array is passed', () => {
     expect(cmp.vm.getRandPosible([])).toBeFalsy();
+  });
+
+});
+
+describe('Sudoku: getShuffledPosibleNumbers() method', () => {
+  let testArr1 = [1,2,3,4];
+
+  it('Return an array with the same length as the input array', () => {
+    expect(cmp.vm.getShuffledPosibleNumbers(testArr1).length).toEqual(testArr1.length);
+  });
+
+  it('Return the same values as the input array', () => {
+    expect(cmp.vm.getShuffledPosibleNumbers(testArr1)).toEqual(expect.arrayContaining(testArr1));
   });
 
 });
@@ -501,10 +487,10 @@ describe('Sudoku: getYNumbers() method', () => {
   });
 });
 
-describe('Sudoku: fillMatrixZeros() method', () => {
+describe('Sudoku: fillMatrixWithZeros() method', () => {
   // Fills the matrix with zeros
   beforeEach(() => {
-    cmp.vm.fillMatrixZeros();
+    cmp.vm.fillMatrixWithZeros();
   });
 
   it('Matrix filled with zeros', () => {
@@ -517,33 +503,31 @@ describe('Sudoku: fillMatrixZeros() method', () => {
 
 });
 
-describe('Sudoku: checkFilledMatrix() method', () => {
-  // Define the test matrix:
-  const testMatrixOnes = [];
-  // Fill with ones
-  for (var j = 0; j < 9; j++) {
-    testMatrixOnes[j] = [];
-    for (var i = 0; i < 9; i++) {
-      testMatrixOnes[j][i] = 1;
-    }
-  }
-
+describe('Sudoku: fillMatrixRandRecursive() method', () => {
   it('Returns true for fully filled matrix', () => {
-    cmp.vm.matrix = testMatrixOnes;
-    expect(cmp.vm.checkFilledMatrix()).toBeTruthy();
-  });
+    cmp.vm.fillMatrixWithZeros(); // fill the matrix with zeros
+    var result = cmp.vm.fillMatrixRandRecursive(0,0); // fill matrix with rands
 
-  it('Returns false for test matrix which have some zeros', () => {
-    cmp.vm.matrix = testMatrix;
-    expect(cmp.vm.checkFilledMatrix()).toBeFalsy();
+    // checks if the matrix is fully filled with numbers between 1 and 9, inclusive
+    let hasOnlyGoodNumbers = true;
+    for (var j = 0; j < 9; j++) {
+      for (var i = 0; i < 9; i++) {
+        expect(cmp.vm.matrix[j][i] >= 1 && cmp.vm.matrix[j][i] <= 9).toBeTruthy();
+      }
+    }
   });
 });
 
-describe('Sudoku: fillMatrixRandRecursive() method', () => {
+describe('Sudoku: fillMatrix() method', () => {
   it('Returns true for fully filled matrix', () => {
-    cmp.vm.fillMatrixZeros(); // fill the matrix with zeros
-    var result = cmp.vm.fillMatrixRandRecursive(0,0); // fill matrix with rands
-    console.log("fillMatrixRandRecursive: "+result);
-    expect(cmp.vm.checkFilledMatrix()).toBeTruthy();
+    cmp.vm.fillMatrix(); // fill the matrix with rands
+
+    // checks if the matrix is fully filled with numbers between 1 and 9, inclusive
+    let hasOnlyGoodNumbers = true;
+    for (var j = 0; j < 9; j++) {
+      for (var i = 0; i < 9; i++) {
+        expect(cmp.vm.matrix[j][i] >= 1 && cmp.vm.matrix[j][i] <= 9).toBeTruthy();
+      }
+    }
   });
 });
