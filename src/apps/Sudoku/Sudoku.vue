@@ -29,11 +29,7 @@
         this.running = false;
         this.finished = true;
       },
-      getRandPosible: function(arr1,arr2,arr3) {
-        if (arr1.length > 9 || arr2.length > 9 || arr3.length > 9) {
-          return false;
-        }
-
+      getAcceptableValues: function(arr1,arr2,arr3) {
         let notAcceptableValues = [];
         var vm = this;
         notAcceptableValues.concat(arr1,arr2,arr3).forEach(function(item) {
@@ -42,19 +38,22 @@
           }
         });
 
-        if(notAcceptableValues.length == this.posibleNumbers.length) {
+        let acceptableValues = [];
+        vm.posibleNumbers.forEach(function(item) {
+          if (!notAcceptableValues.includes(item)) {
+            acceptableValues.push(item);
+          }
+        });
+
+        return acceptableValues;
+      },
+      getRandPosible: function(acceptableValues) {
+        if(acceptableValues.length < 1 || acceptableValues.length > 9) {
           return false;
         }
         else {
-          let gotIt = false;
-          let rnd;
-          while (!gotIt) {
-            rnd = Math.floor(Math.random(0,1) * 9)+1;
-            if (!notAcceptableValues.includes(rnd)) {
-              gotIt = true;
-            }
-          }
-          return rnd;
+          let rnd = Math.floor(Math.random(0,1) * acceptableValues.length);
+          return acceptableValues[rnd];
         }
       },
       getSubMatrixPos: function(mx,my) {
@@ -150,25 +149,83 @@
           }
         }
       },
-      fillMatrixRand: function() {
-        this.fillMatrixZeros(); // fill the matrix with zeros
-
-        for (var x = 0; x < 9; x++) {
-          for (var y = 0; y < 9; y++) {
-            let subMatrixPos = this.getSubMatrixPos(x+1,y+1);
-            let subMatrixNumbers = this.getSubMatrixNumbers(subMatrixPos.x,subMatrixPos.y);
-            let xNumbers = this.getXNumbers(y+1);
-            let yNumbers = this.getYNumbers(x+1);
-            var rndValue = this.getRandPosible(subMatrixNumbers,xNumbers,yNumbers);
-            if (rndValue) {
-              this.matrix[x][y] = rndValue;
+      fillMatrixRandRecursive: function(x,y) {
+        if (y == 9) { // the matrix is completed, we are done
+          console.log('We are done.');
+          return true;
+        }
+        else { // if not, we put a number and continue
+          if (this.matrix[x][y] != 0) {
+            if (x < 8) {
+              if (this.fillMatrixRandRecursive(x+1,y)) {
+                return true;
+              }
             }
             else {
-              this.matrix[x][y] = -1; // IF THERE ARE -1s ON THE MATRIX THEN THIS FAILED
+              if (this.fillMatrixRandRecursive(0,y+1)) {
+                return true;
+              }
             }
-          }// for
-        }// for
-      }// fillMatrixRand
+          }
+          else {
+            let rands = this.posibleNumbers;
+            var vm = this;
+            rands.forEach(function(rnd) {
+              let subMatrixPos = vm.getSubMatrixPos(x+1,y+1);
+              let subMatrixNumbers = vm.getSubMatrixNumbers(subMatrixPos.x,subMatrixPos.y);
+              let xNumbers = vm.getXNumbers(y+1);
+              let yNumbers = vm.getYNumbers(x+1);
+              let acceptableValues = vm.getAcceptableValues(subMatrixNumbers,xNumbers,yNumbers);
+              if (acceptableValues.indexOf(rnd) != -1) { // the rand numbers is valid
+                vm.matrix[x][y] = rnd;
+                /////////////////////////////////////////////
+                console.log('=== rnd:'+rnd+' acceptableValues:'+acceptableValues);
+                console.log("===================================");
+                console.log('Called with coordinates x:'+x+' y:'+y);
+                // output Matrix to console
+                for (var k = 0; k < 9; k++) {
+                  console.log(vm.matrix[k]);
+                }
+                /////////////////////////////////////////////
+                if (x < 8) {
+                  if (vm.fillMatrixRandRecursive(x+1,y)) {
+                    return true;
+                  }
+                  else {
+                    vm.matrix[x][y] = 0;
+                  }
+                }
+                else {
+                  if (vm.fillMatrixRandRecursive(0,y+1)) {
+                    return true;
+                  }
+                  else {
+                    vm.matrix[x][y] = 0;
+                  }
+                }
+              }
+            });
+          }
+
+          return false;
+        }
+      },// fillMatrixRandRecursive
+      fillMatrix: function() {
+        this.fillMatrixZeros(); // fill the matrix with zeros
+        // I fill the matrix with zeros first because otherwise it breaks
+        this.fillMatrixRandRecursive(); // fill the matrix with rand numbers abiding the Sudoku rules
+      },
+      checkFilledMatrix: function() {
+        var hasOnlyGoodNumbers = true;
+        for (var j = 0; j < 9; j++) {
+          for (var i = 0; i < 9; i++) {
+            if (!(this.matrix[j][i] >= 1 && this.matrix[j][i] <= 9)) {
+              hasOnlyGoodNumbers = false;
+            }
+          }
+        }
+        return hasOnlyGoodNumbers;
+      }
     }
   }
 </script>

@@ -33,7 +33,7 @@ describe('Sudoku: Initialization', () => {
   });
 });
 
-describe('Fastype: start() method', () => {
+describe('Sudoku: start() method', () => {
   beforeEach(() => {
     cmp.vm.start();
   });
@@ -43,7 +43,7 @@ describe('Fastype: start() method', () => {
   });
 });
 
-describe('Fastype: stop() method', () => {
+describe('Sudoku: stop() method', () => {
   beforeEach(() => {
     cmp.vm.start();
     cmp.vm.stop();
@@ -58,6 +58,24 @@ describe('Fastype: stop() method', () => {
   });
 });
 
+describe('Sudoku: getAcceptableValues() method', () => {
+  let arr1 = [1,2];
+  let arr2 = [2,5,9];
+  let arr3 = [1,8,9];
+
+  it('Contains 3 4 6 7', () => {
+    expect(cmp.vm.getAcceptableValues(arr1,arr2,arr3)).toEqual(expect.arrayContaining([3,4,6,7]));
+  });
+
+  it('Do not contains 1 2 5 8 9', () => {
+    expect(cmp.vm.getAcceptableValues(arr1,arr2,arr3)).toEqual(expect.not.arrayContaining([1,2,5,8,9]));
+  });
+
+  it('Returns empty array if there are no options', () => {
+    expect(cmp.vm.getAcceptableValues([1,2,3,4,5,6,7,8,9],arr2,arr3)).toEqual([]);
+  });
+});
+
 describe('Sudoku: getRandPosible() method', () => {
 
   let arr1 = [1,5,6];
@@ -67,60 +85,29 @@ describe('Sudoku: getRandPosible() method', () => {
 
   it('Only greaters than 0', () => {
     for (var i=0; i < 1000; i++) {
-      expect(cmp.vm.getRandPosible(arr1,arr2,arr3)).toBeGreaterThan(0);
+      expect(cmp.vm.getRandPosible(arr1)).toBeGreaterThan(0);
     }
   });
 
   it('Only lessers than 10', () => {
     for (var i=0; i < 1000; i++) {
-      expect(cmp.vm.getRandPosible(arr1,arr2,arr3)).toBeLessThan(10);
+      expect(cmp.vm.getRandPosible(arr2)).toBeLessThan(10);
     }
   });
 
-  it('Numbers not contained in the first array given', () => {
+  it('Only numbers contained in the array given', () => {
     for (var i=0; i < 1000; i++) {
-      let rnd = cmp.vm.getRandPosible(arr1,arr2,arr3);
-      expect(arr1.includes(rnd)).toBeFalsy();
+      let rnd = cmp.vm.getRandPosible(arr2);
+      expect(arr2.includes(rnd)).toBeTruthy();
     }
   });
 
-  it('Numbers not contained in the second array given', () => {
-    for (var i=0; i < 1000; i++) {
-      let rnd = cmp.vm.getRandPosible(arr1,arr2,arr3);
-      expect(arr2.includes(rnd)).toBeFalsy();
-    }
+  it('Returns false if array\'s length is greater than 9', () => {
+    expect(cmp.vm.getRandPosible(bigArr)).toBeFalsy();
   });
 
-  it('Numbers not contained in the third array given', () => {
-    for (var i=0; i < 1000; i++) {
-      let rnd = cmp.vm.getRandPosible(arr1,arr2,arr3);
-      expect(arr3.includes(rnd)).toBeFalsy();
-    }
-  });
-
-  it('Numbers not contained in any of the given arrays', () => {
-    for (var i=0; i < 1000; i++) {
-      let rnd = cmp.vm.getRandPosible(arr1,arr2,arr3);
-      expect(arr1.includes(rnd)).toBeFalsy();
-      expect(arr2.includes(rnd)).toBeFalsy();
-      expect(arr3.includes(rnd)).toBeFalsy();
-    }
-  });
-
-  it('Returns false if first array\'s length is greater than 9', () => {
-    expect(cmp.vm.getRandPosible(bigArr,arr2,arr3)).toBeFalsy();
-  });
-
-  it('Returns false if second array\'s length is greater than 9', () => {
-    expect(cmp.vm.getRandPosible(arr1,bigArr,arr3)).toBeFalsy();
-  });
-
-  it('Returns false if third array\'s length is greater than 9', () => {
-    expect(cmp.vm.getRandPosible(arr1,arr2,bigArr)).toBeFalsy();
-  });
-
-  it('Returns false if all the posible numbers are contained in the given arrays', () => {
-    expect(cmp.vm.getRandPosible([1,2,3,4,5],[5,6,7,8],[2,9])).toBeFalsy();
+  it('Returns false if empty array is passed', () => {
+    expect(cmp.vm.getRandPosible([])).toBeFalsy();
   });
 
 });
@@ -514,33 +501,49 @@ describe('Sudoku: getYNumbers() method', () => {
   });
 });
 
-describe('Sudoku: fillMatrixRand() method', () => {
-  // Fills the matrix with random numbers abiding the Sudoku rules
+describe('Sudoku: fillMatrixZeros() method', () => {
+  // Fills the matrix with zeros
   beforeEach(() => {
-    cmp.vm.fillMatrixRand();
+    cmp.vm.fillMatrixZeros();
   });
 
-  it('Matrix filled', () => {
+  it('Matrix filled with zeros', () => {
     for (var j = 0; j < 9; j++) {
       for (var i = 0; i < 9; i++) {
-        expect(cmp.vm.matrix[j][i]).not.toBeNull();
+        expect(cmp.vm.matrix[j][i]).toBe(0);
       }
     }
   });
 
-  it('Matrix filled only with values lessers than 10', () => {
-    for (var j = 0; j < 9; j++) {
-      for (var i = 0; i < 9; i++) {
-        expect(cmp.vm.matrix[j][i] < 10).toBeTruthy();
-      }
-    }
-  });
+});
 
-  // output Matrix to console
-  var cmp = mount(Sudoku);
-  cmp.vm.fillMatrixRand();
-  for (var x = 0; x < 9; x++) { // fill the matrix with zeros
-    console.log(cmp.vm.matrix[x]);
+describe('Sudoku: checkFilledMatrix() method', () => {
+  // Define the test matrix:
+  const testMatrixOnes = [];
+  // Fill with ones
+  for (var j = 0; j < 9; j++) {
+    testMatrixOnes[j] = [];
+    for (var i = 0; i < 9; i++) {
+      testMatrixOnes[j][i] = 1;
+    }
   }
 
+  it('Returns true for fully filled matrix', () => {
+    cmp.vm.matrix = testMatrixOnes;
+    expect(cmp.vm.checkFilledMatrix()).toBeTruthy();
+  });
+
+  it('Returns false for test matrix which have some zeros', () => {
+    cmp.vm.matrix = testMatrix;
+    expect(cmp.vm.checkFilledMatrix()).toBeFalsy();
+  });
+});
+
+describe('Sudoku: fillMatrixRandRecursive() method', () => {
+  it('Returns true for fully filled matrix', () => {
+    cmp.vm.fillMatrixZeros(); // fill the matrix with zeros
+    var result = cmp.vm.fillMatrixRandRecursive(0,0); // fill matrix with rands
+    console.log("fillMatrixRandRecursive: "+result);
+    expect(cmp.vm.checkFilledMatrix()).toBeTruthy();
+  });
 });
