@@ -5,7 +5,7 @@
             @click="fillMatrix">Generate Sudoku</button>
     <table class="sudokuPuzzle mt-4">
       <tr v-for="row in matrix">
-        <td v-for="td in row">{{ td == 0 ? '': td }}</td>
+        <td v-for="td in row" v-html="$options.filters.zerosToInput(td)"></td>
       </tr>
     </table>
   </div>
@@ -231,6 +231,16 @@
 
         this.dropSomeZerosOnMatrix(); // drop some zeros at random places of the matrix
       }
+    },
+    filters: {
+      zerosToInput: function(value) {
+        if (value == 0){
+          return '<input type="text" maxlength="1" style="text-align:center;width:30px;border:1px solid lightgray;background-color:transparent">';
+        }
+        else {
+          return value;
+        }
+      }
     }
   }
 </script>
@@ -239,7 +249,6 @@
   .sudokuPuzzle td {
     border: 1px solid #999;
     text-align:center;
-    padding: 4px 15px 4px 15px;
   }
 
   .sudokuPuzzle {
