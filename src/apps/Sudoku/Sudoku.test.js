@@ -488,12 +488,9 @@ describe('Sudoku: getYNumbers() method', () => {
 });
 
 describe('Sudoku: fillMatrixWithZeros() method', () => {
-  // Fills the matrix with zeros
-  beforeEach(() => {
-    cmp.vm.fillMatrixWithZeros();
-  });
-
   it('Matrix filled with zeros', () => {
+    cmp.vm.fillMatrixWithZeros();
+    
     for (var j = 0; j < 9; j++) {
       for (var i = 0; i < 9; i++) {
         expect(cmp.vm.matrix[j][i]).toBe(0);
@@ -504,12 +501,11 @@ describe('Sudoku: fillMatrixWithZeros() method', () => {
 });
 
 describe('Sudoku: fillMatrixRandRecursive() method', () => {
-  it('Returns true for fully filled matrix', () => {
+  it('Fully filled Matrix without zeros', () => {
     cmp.vm.fillMatrixWithZeros(); // fill the matrix with zeros
-    var result = cmp.vm.fillMatrixRandRecursive(0,0); // fill matrix with rands
+    cmp.vm.fillMatrixRandRecursive(0,0); // fill matrix with rands
 
     // checks if the matrix is fully filled with numbers between 1 and 9, inclusive
-    let hasOnlyGoodNumbers = true;
     for (var j = 0; j < 9; j++) {
       for (var i = 0; i < 9; i++) {
         expect(cmp.vm.matrix[j][i] >= 1 && cmp.vm.matrix[j][i] <= 9).toBeTruthy();
@@ -518,16 +514,50 @@ describe('Sudoku: fillMatrixRandRecursive() method', () => {
   });
 });
 
-describe('Sudoku: fillMatrix() method', () => {
-  it('Returns true for fully filled matrix', () => {
-    cmp.vm.fillMatrix(); // fill the matrix with rands
+describe('Sudoku: dropSomeZerosOnMatrix() method', () => {
+  it('Fully filled Matrix with positive numbers and zeros', () => {
+    cmp.vm.fillMatrixWithZeros(); // fill the matrix with zeros
+    cmp.vm.fillMatrixRandRecursive(0,0); // fill matrix with rands
+    cmp.vm.dropSomeZerosOnMatrix(); // drop some zeros at random places of the matrix
 
-    // checks if the matrix is fully filled with numbers between 1 and 9, inclusive
-    let hasOnlyGoodNumbers = true;
+    // checks if the matrix is fully filled with positive numbers and zeros
+    let hasZeros = false;
+    let hasPositives = false;
     for (var j = 0; j < 9; j++) {
       for (var i = 0; i < 9; i++) {
-        expect(cmp.vm.matrix[j][i] >= 1 && cmp.vm.matrix[j][i] <= 9).toBeTruthy();
+        if (cmp.vm.matrix[j][i] >= 1 && cmp.vm.matrix[j][i] <= 9) {
+          hasPositives = true;
+        }
+        else if (cmp.vm.matrix[j][i] == 0) {
+          hasZeros = true;
+        }
       }
     }
+
+    expect(hasPositives).toBeTruthy();
+    expect(hasZeros).toBeTruthy();
+  });
+});
+
+describe('Sudoku: fillMatrix() method', () => {
+  it('Fully filled Matrix with positive numbers and zeros', () => {
+    cmp.vm.fillMatrix(); // fill the matrix with rands and then some zeros at random places
+
+    // checks if the matrix is fully filled with positive numbers and zeros
+    let hasZeros = false;
+    let hasPositives = false;
+    for (var j = 0; j < 9; j++) {
+      for (var i = 0; i < 9; i++) {
+        if (cmp.vm.matrix[j][i] >= 1 && cmp.vm.matrix[j][i] <= 9) {
+          hasPositives = true;
+        }
+        else if (cmp.vm.matrix[j][i] == 0) {
+          hasZeros = true;
+        }
+      }
+    }
+
+    expect(hasPositives).toBeTruthy();
+    expect(hasZeros).toBeTruthy();
   });
 });

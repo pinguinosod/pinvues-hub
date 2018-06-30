@@ -5,7 +5,7 @@
             @click="fillMatrix">Generate Sudoku</button>
     <table class="sudokuPuzzle mt-4">
       <tr v-for="row in matrix">
-        <td v-for="tds in row">{{ tds }}</td>
+        <td v-for="td in row">{{ td == 0 ? '': td }}</td>
       </tr>
     </table>
   </div>
@@ -213,10 +213,23 @@
 
         return false;
       },
+      dropSomeZerosOnMatrix: function() { // drop some zeros at random places of the matrix
+        for (var x = 0; x < 9; x++) {
+          for (var y = 0; y < 9; y++) {
+            let doIt = Math.floor(Math.random(0,1)*2); // 0 or 1
+            if (doIt) {
+              //this.matrix[x][y] = 0;
+              this.matrix[x].splice(y, 1, 0);
+            }
+          }
+        }
+      },
       fillMatrix: function() {
         this.fillMatrixWithZeros(); // fill the matrix with zeros
         // I fill the matrix with zeros first because otherwise it breaks
         this.fillMatrixRandRecursive(0,0); // fill the matrix with rand numbers abiding the Sudoku rules
+
+        this.dropSomeZerosOnMatrix(); // drop some zeros at random places of the matrix
       }
     }
   }
