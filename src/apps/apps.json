@@ -16,5 +16,11 @@
     "description": "Generates a sudoku puzzle.",
     "author": "PinguinoSod",
     "url": "sudoku"
+  },
+  {
+    "name": "Cryptocurrency",
+    "description": "Cryptocurrency rankings and charts.",
+    "author": "PinguinoSod",
+    "url": "cryptocurrency"
   }
 ]
