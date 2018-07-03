@@ -132,7 +132,7 @@ export default {
       return ( (high - low) / (this.candlesHighest - this.candlesLowest) ) * 100;
     },
     getCandleColor: function(candle) {
-      return candle[1] - candle[4] > 0 ? 'red' : 'green';
+      return candle[1] > candle[4] ? 'red' : 'green';
     },
     getCandleTopPosition: function(high) {
       return ( (this.candlesHighest - high) / (this.candlesHighest - this.candlesLowest) ) * 100;
