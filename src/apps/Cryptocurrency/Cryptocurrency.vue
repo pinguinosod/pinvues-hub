@@ -7,64 +7,78 @@
         https://api.binance.com
       </a>
     </div>
-    <div class="row">
-      <div class="col-sm-4 col-md-3 col-lg-2">
-        <div class="mt-4">Pair:
-          <select name="symbolSelect"
-                  class="form-control"
-                  v-model="selectedSymbol">
-            <option :value="crypto.symbol" v-for="crypto in cryptoDataFiltered">
-              {{ crypto.symbol }}
-            </option>
-          </select>
-        </div>
-        <div class="mt-4">
-          Search Pair: <input type="text"
-                         v-model="symbolFilter"
-                         class="form-control">
-        </div>
-        <div class="mt-4">Filter By Market:
-          <select name="quoteAssetFilter"
-                  class="form-control"
-                  v-model="quoteAssetFilter">
-            <option value="">All</option>
-            <option :value="quoteAsset" v-for="quoteAsset in quoteAssets">
-              {{ quoteAsset }}
-            </option>
-          </select>
-        </div>
+    <transition name="fade">
+      <div v-if="cryptoData.length == 0" class="row" key="loading">
+        <div class="col"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
       </div>
-      <div class="col-sm-8 col-md-9 col-lg-10 mt-4">
-        <div  v-show="!selectedSymbol" class="alert alert-info">Please select a pair.</div>
-        <div v-show="selectedSymbol">
-          <h5>{{ selectedSymbol }}</h5>
-          <span v-if="loadingCandles">LOADING CANDLES!!11</span>
-          <span v-else> [24h]
-                        High: {{ candlesHighest }} |
-                        Low: {{ candlesLowest }} |
-                        Open: {{ candlesOpen }} |
-                        Close: {{ candlesClose }}
-          </span>
-          <div id="candleChart">
-            <div v-for="candle in candlesData"
-                 class="candle">
-              <div class="HighLow"
-                   :style="{
-                             'height': getCandleHeight(candle[2],candle[3])+'%',
-                             'background-color': getCandleColor(candle),
-                             'top': getCandleTopPosition(candle[2])+'%'
-                            }"></div>
-              <div class="OpenClose"
-                   :style="{
-                             'height': getCandleHeight(higher(candle[4],candle[1]),lower(candle[4],candle[1]))+'%',
-                             'background-color': getCandleColor(candle),
-                             'top': getCandleTopPosition(higher(candle[4],candle[1]))+'%'
-                            }"></div>
-            </div>
+      <div v-else class="row" key="content">
+        <div class="col-md-6 col-lg-4">
+          <div class="mt-4">
+            <ul class="nav nav-pills">
+              <li class="nav-item" v-for="quoteAsset in quoteAssets">
+                <a  class="nav-link"
+                    :class="{'active': quoteAsset == quoteAssetFilter}"
+                    href="#"
+                    @click="selectQuoteAsset($event,quoteAsset)">{{ quoteAsset }}</a>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4">
+            <input type="text"
+                   placeholder="Search..."
+                   v-model="symbolFilter"
+                   class="form-control">
+          </div>
+          <div class="mt-4">Pair:
+            <ul id="symbolList">
+              <li v-for="crypto in cryptoDataFiltered"
+                  :class="{'active': selectedSymbol == crypto.symbol}"
+                  @click="selectedSymbol = crypto.symbol">
+                {{ crypto.symbol }}
+              </li>
+            </ul>
           </div>
         </div>
+        <div class="col-md-6 col-lg-8 mt-4">
+          <transition name="fade">
+            <div v-if="!selectedSymbol" class="alert alert-info" key="noSymbol">Please select a pair.</div>
+            <div v-else key="gotSymbol" id="candleChartContainer">
+              <transition name="fade">
+                <div v-if="loadingCandles" key="loadingCandles">
+                  <i class="fas fa-spinner fa-spin"></i> LOADING CANDLES!!11
+                </div>
+                <div v-else key="candlesLoaded">
+                  <h5>{{ selectedSymbol }}</h5>
+                  <span> [24h]
+                                High: {{ candlesHighest }} |
+                                Low: {{ candlesLowest }} |
+                                Open: {{ candlesOpen }} |
+                                Close: {{ candlesClose }}
+                  </span>
+                  <div id="candleChart">
+                    <div v-for="candle in candlesData"
+                         class="candle">
+                      <div class="HighLow"
+                           :style="{
+                                     'height': getCandleHeight(candle[2],candle[3])+'%',
+                                     'background-color': getCandleColor(candle),
+                                     'top': getCandleTopPosition(candle[2])+'%'
+                                    }"></div>
+                      <div class="OpenClose"
+                           :style="{
+                                     'height': getCandleHeight(higher(candle[4],candle[1]),lower(candle[4],candle[1]))+'%',
+                                     'background-color': getCandleColor(candle),
+                                     'top': getCandleTopPosition(higher(candle[4],candle[1]))+'%'
+                                    }"></div>
+                    </div>
+                  </div>
+                </div>
+              </transition>
+            </div>
+          </transition>
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -142,6 +156,15 @@ export default {
     },
     lower: function(a,b) {
       return a < b ? a : b;
+    },
+    selectQuoteAsset: function(event,quoteAsset) {
+      event.preventDefault();
+      if (quoteAsset == this.quoteAssetFilter) {
+        this.quoteAssetFilter = '';
+      }
+      else {
+        this.quoteAssetFilter = quoteAsset;
+      }
     }
   },
   computed: {
@@ -199,7 +222,36 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  @import "../../styles/settings.scss";
+
+  .fade-enter-active {
+    transition: opacity .2s;
+  }
+  .fade-enter {
+    opacity: 0;
+  }
+
+  #symbolList {
+    height: 210px;
+    overflow-y: auto;
+    padding:0px;
+  }
+
+  #symbolList li {
+    cursor: pointer;
+    list-style-type: none;
+  }
+
+  #symbolList li.active {
+    background-color: $primary-color;
+    color: $alternative-text-color;
+  }
+
+  #candleChartContainer {
+    min-height:380px;
+  }
+
   #candleChart {
     height: 300px;
   }
