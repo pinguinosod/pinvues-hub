@@ -224,13 +224,7 @@ export default {
 
 <style lang="scss" scoped>
   @import "../../styles/settings.scss";
-
-  .fade-enter-active {
-    transition: opacity .2s;
-  }
-  .fade-enter {
-    opacity: 0;
-  }
+  @import "../../styles/animations.scss";
 
   #symbolList {
     height: 210px;

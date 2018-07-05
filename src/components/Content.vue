@@ -30,32 +30,10 @@
 
 <style lang="scss">
   @import "../styles/settings.scss";
+  @import "../styles/animations.scss";
 
   main {
     min-height: $content-height;
     background-color: $default-background-color;
-  }
-
-  .swipe-right-enter {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  .swipe-left-enter {
-    transform: translateX(20px);
-    opacity: 0;
-  }
-  .swipe-right-enter-active,
-  .swipe-right-leave-active,
-  .swipe-left-enter-active,
-  .swipe-left-leave-active  {
-    transition: all ease-in .15s;
-  }
-  .swipe-right-leave-to {
-    transform: translateX(20px);
-    opacity: 0;
-  }
-  .swipe-left-leave-to {
-    transform: translateX(-20px);
-    opacity: 0;
   }
 </style>

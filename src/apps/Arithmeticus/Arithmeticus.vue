@@ -166,6 +166,8 @@
 </script>
 
 <style scoped>
+  @import "../../styles/animations.scss";
+
   input#yourResponse {
     width: 40px;
   }
@@ -175,12 +177,5 @@
       /* display: none; <- Crashes Chrome on hover */
       -webkit-appearance: none;
       margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-  }
-
-  .fade-enter-active {
-    transition: opacity .2s;
-  }
-  .fade-enter {
-    opacity: 0;
   }
 </style>
