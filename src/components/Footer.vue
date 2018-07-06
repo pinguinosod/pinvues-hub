@@ -1,9 +1,10 @@
 <template>
   <footer>
-    <div class="container d-flex align-items-center">
-      <div class="row">
-        <div class="col-12">Made by PinguinoSod (David Cautin).</div>
-      </div>
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>Made by PinguinoSod (David Cautin).</div>
+        <div>
+          <a href="https://github.com/pinguinosod/pinvues-hub"><i class="fab fa-github fa-2x"></i></a>
+        </div>
     </div>
   </footer>
 </template>
@@ -17,5 +18,11 @@
   }
   .container {
     height:100%;
+  }
+  a {
+    color: #777;
+  }
+  a:hover {
+    color: #bbb;
   }
 </style>

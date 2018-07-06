@@ -32,4 +32,8 @@ export default {
     background-color: #fff;
     color: $default-text-color;
   }
+
+  a:hover {
+    text-decoration: none;
+  }
 </style>

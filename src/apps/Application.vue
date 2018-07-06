@@ -6,7 +6,7 @@
       <i class="fas fa-angle-left"></i>
       Go Back
     </router-link>
-    <div id="appContainer">
+    <div id="appContainer" class="mb-4">
       <component v-if="found" v-bind:is="compo"></component>
       <p v-if="!found">App not found.</p>
     </div>

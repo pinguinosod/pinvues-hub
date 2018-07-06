@@ -1,9 +1,14 @@
 <template>
   <header>
-    <div class="container d-flex align-items-center">
-      <div class="row">
-        <div class="col-12" id="header"><h2 class="text-left">PinVue's Hub</h2></div>
-      </div>
+    <div class="container d-flex justify-content-between align-items-center">
+        <div id="header">
+          <router-link to="/">
+            <h2 class="text-left">PinVue's Hub</h2>
+          </router-link>
+        </div>
+        <div>
+          <router-link to="/about">About</router-link>
+        </div>
     </div>
   </header>
 </template>
@@ -19,6 +24,16 @@
   }
   h2 {
     font-weight: bold;
-    color: $quaternary-color;
+  }
+  h2:hover {
+
+  }
+  a {
+    font-weight: bold;
+    color: $secondary-color;
+  }
+  a:hover {
+    font-weight: bold;
+    color: $tertiary-color;
   }
 </style>
