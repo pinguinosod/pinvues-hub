@@ -27,7 +27,7 @@
             <input type="text"
                    placeholder="Search..."
                    v-model="symbolFilter"
-                   class="form-control">
+                   class="form-control form-control-sm">
           </div>
           <div class="mt-4">Pair:
             <ul id="symbolList">
@@ -43,17 +43,45 @@
           <transition name="fade">
             <div v-if="!selectedSymbol" class="alert alert-info" key="noSymbol">Please select a pair.</div>
             <div v-else key="gotSymbol" id="candleChartContainer">
+              <div class="row">
+                <div class="col-3">
+                  <h5>{{ selectedSymbol }}</h5>
+                </div>
+                <div class="col-9">
+                  <div class="form-group row">
+                    <label class="col-8 col-form-label text-right">Time Interval:</label>
+                    <div class="col-4">
+                      <select class="form-control form-control-sm" v-model="chartInterval">
+                        <option value="1m">1m</option>
+                        <option value="3m">3m</option>
+                        <option value="5m">5m</option>
+                        <option value="15m">15m</option>
+                        <option value="30m">30m</option>
+                        <option value="1h">1h</option>
+                        <option value="2h">2h</option>
+                        <option value="4h">4h</option>
+                        <option value="6h">6h</option>
+                        <option value="8h">8h</option>
+                        <option value="12h">12h</option>
+                        <option value="1d">1d</option>
+                        <option value="3d">3d</option>
+                        <option value="1w">1w</option>
+                        <option value="1M">1M</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <transition name="fade">
                 <div v-if="loadingCandles" key="loadingCandles">
                   <i class="fas fa-spinner fa-spin"></i> LOADING CANDLES!!11
                 </div>
                 <div v-else key="candlesLoaded">
-                  <h5>{{ selectedSymbol }}</h5>
-                  <span> [24h]
-                                High: {{ candlesHighest }} |
-                                Low: {{ candlesLowest }} |
-                                Open: {{ candlesOpen }} |
-                                Close: {{ candlesClose }}
+                  <span>
+                    <span class="badge badge-success">High: {{ candlesHighest }}</span>
+                    <span class="badge badge-danger">Low: {{ candlesLowest }}</span>
+                    <span class="badge badge-secondary">Open: {{ candlesOpen }}</span>
+                    <span class="badge badge-secondary">Close: {{ candlesClose }}</span>
                   </span>
                   <div id="candleChart">
                     <div v-for="candle in candlesData"
@@ -93,7 +121,8 @@ export default {
       loadingCandles: false,
       selectedSymbol: '',
       quoteAssetFilter: '',
-      symbolFilter: ''
+      symbolFilter: '',
+      chartInterval: '1h'
     }
   },
   methods: {
@@ -109,9 +138,9 @@ export default {
         this.cryptoData = [];
       })
     },
-    getCandles: function(symbol) {
+    getCandles: function(symbol, chartInterval) {
       this.loadingCandles = true;
-      this.$http.get('http://pinguino.sonet.cl/binance-api/getCandles.php?symbol='+symbol+'&interval=1h&limit=24')
+      this.$http.get('http://pinguino.sonet.cl/binance-api/getCandles.php?symbol='+symbol+'&interval='+chartInterval+'&limit=24')
       .then(response=> {
         return response.json();
       })
@@ -187,32 +216,37 @@ export default {
       });
     },
     candlesHighest: function() {
-      let highest = -1;
+      var highest = parseFloat(this.candlesData[0][2]);
       this.candlesData.map(function(candle) {
-        if (candle[2] > highest) highest = candle[2];
+        if (parseFloat(candle[2]) > highest) highest = parseFloat(candle[2]);
       });
       return highest;
     },
     candlesLowest: function() {
-      let lowest = 9999999999;
+      var lowest = parseFloat(this.candlesData[0][2]);
       this.candlesData.map(function(candle) {
-        if (candle[3] < lowest) lowest = candle[3];
+        if (parseFloat(candle[3]) < lowest) lowest = parseFloat(candle[3]);
       });
       return lowest;
     },
     candlesOpen: function() {
-      if (this.candlesData.length > 0) return this.candlesData[0][1];
+      if (this.candlesData.length > 0) return parseFloat(this.candlesData[0][1]);
       else return '';
     },
     candlesClose: function() {
-      if (this.candlesData.length > 0) return this.candlesData[this.candlesData.length-1][4];
+      if (this.candlesData.length > 0) return parseFloat(this.candlesData[this.candlesData.length-1][4]);
       else return '';
     }
   },
   watch: {
     selectedSymbol: function(newSymbol,oldSymbol) {
       if (newSymbol) {
-        this.getCandles(newSymbol);
+        this.getCandles(newSymbol,this.chartInterval);
+      }
+    },
+    chartInterval: function(newInterval,oldInterval) {
+      if (newInterval) {
+        this.getCandles(this.selectedSymbol,newInterval);
       }
     }
   },
