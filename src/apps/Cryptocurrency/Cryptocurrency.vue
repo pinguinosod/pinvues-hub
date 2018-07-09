@@ -76,7 +76,7 @@
                 <div v-if="loadingCandles" key="loadingCandles">
                   <i class="fas fa-spinner fa-spin"></i> LOADING CANDLES!!11
                 </div>
-                <div v-else key="candlesLoaded">
+                <div v-else key="candlesLoaded" id="candlesLoaded">
                   <span>
                     <span class="badge badge-success">High: {{ candlesHighest }}</span>
                     <span class="badge badge-danger">Low: {{ candlesLowest }}</span>
@@ -84,6 +84,13 @@
                     <span class="badge badge-secondary">Close: {{ candlesClose }}</span>
                   </span>
                   <div id="candleChart">
+                    <div id="chartPrices">
+                      <div v-for="price in chartPrices"
+                           class="priceLine"
+                           :style="{'top': getCandleTopPosition(price)+'%'}">
+                        <span class="price">{{ price }}</span>
+                      </div>
+                    </div>
                     <div v-for="candle in candlesData"
                          class="candle">
                       <div class="HighLow"
@@ -236,6 +243,18 @@ export default {
     candlesClose: function() {
       if (this.candlesData.length > 0) return parseFloat(this.candlesData[this.candlesData.length-1][4]);
       else return '';
+    },
+    chartPrices: function() {
+      var rows = 5;
+      var interval = (this.candlesHighest - this.candlesLowest) / rows;
+      var prices = [];
+      for (var i = 0; i <= rows; i++) {
+        let rest = interval * i;
+        let price = this.candlesHighest-rest;
+        let priceRounded = Math.round(price * 100000000) / 100000000; // round to 8 decimal digits max
+        prices.push(priceRounded);
+      }
+      return prices;
     }
   },
   watch: {
@@ -278,14 +297,22 @@ export default {
 
   #candleChartContainer {
     min-height:380px;
+    width: 100%;
+    margin-right:auto;
+    margin-left:0px;
+  }
+
+  #candleChartContainer #candlesLoaded {
+    width:80%;
   }
 
   #candleChart {
     height: 300px;
+    position: relative;
   }
 
   #candleChart .candle {
-    width: 3.5%;
+    width: 3.2%;
     height: 100%;
     display: inline-block;
     text-align: center;
@@ -304,5 +331,29 @@ export default {
     position: absolute;
     left: 0;
     min-height: 0.5%;
+  }
+
+  #candleChart #chartPrices {
+    position:absolute;
+    top:0;
+    height:100%;
+    width:100%;
+  }
+
+  #candleChart #chartPrices > .priceLine {
+    position:absolute;
+    border-top: 1px solid lightgray;
+    width:100%;
+    text-align:right;
+  }
+
+  #candleChart #chartPrices > .priceLine > .price {
+    position:relative;
+    top:-13px;
+    right:-70px;
+    font-size:0.7rem;
+    width:60px;
+    text-align:left;
+    display:inline-block;
   }
 </style>
