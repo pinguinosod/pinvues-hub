@@ -87,8 +87,14 @@
                     <div id="chartPrices">
                       <div v-for="price in chartPrices"
                            class="priceLine"
-                           :style="{'top': getCandleTopPosition(price)+'%'}">
+                           :style="{'top': getCandleTopPosition(price)+'%',
+                                    'display': getCandleTopPosition(price) - getCandleTopPosition(candlesClose) < 3 && getCandleTopPosition(price) - getCandleTopPosition(candlesClose) > -3 ? 'none' : 'inline-block'
+                                   }"> <!--we hide the line if its too close to the currentprice line -->
                         <span class="price">{{ price }}</span>
+                      </div>
+                      <div class="priceLine currentPrice"
+                           :style="{'top': getCandleTopPosition(candlesClose)+'%'}">
+                        <span class="price">{{ candlesClose }}</span>
                       </div>
                     </div>
                     <div v-for="candle in candlesData"
@@ -355,5 +361,15 @@ export default {
     width:60px;
     text-align:left;
     display:inline-block;
+  }
+
+  #candleChart #chartPrices > .priceLine.currentPrice {
+    border-top: 1px dashed lightgray;
+  }
+
+  #candleChart #chartPrices > .priceLine.currentPrice > .price::before {
+    content: '▸';
+    position: absolute;
+    left: -7px;
   }
 </style>
