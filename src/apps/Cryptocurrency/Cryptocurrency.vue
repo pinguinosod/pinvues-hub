@@ -78,23 +78,23 @@
                 </div>
                 <div v-else key="candlesLoaded" id="candlesLoaded">
                   <span>
+                    <span class="badge badge-primary">Open: {{ candlesOpen }}</span>
                     <span class="badge badge-success">High: {{ candlesHighest }}</span>
                     <span class="badge badge-danger">Low: {{ candlesLowest }}</span>
-                    <span class="badge badge-secondary">Open: {{ candlesOpen }}</span>
-                    <span class="badge badge-secondary">Close: {{ candlesClose }}</span>
+                    <span class="badge badge-warning">Last: {{ candlesClose }}</span>
                   </span>
                   <div id="candleChart">
                     <div id="chartPrices">
                       <div v-for="price in chartPrices"
                            class="priceLine"
                            :style="{'top': getCandleTopPosition(price)+'%',
-                                    'display': getCandleTopPosition(price) - getCandleTopPosition(candlesClose) < 3 && getCandleTopPosition(price) - getCandleTopPosition(candlesClose) > -3 ? 'none' : 'inline-block'
+                                    'display': getCandleTopPosition(price) - getCandleTopPosition(candlesClose) < 4 && getCandleTopPosition(price) - getCandleTopPosition(candlesClose) > -4 ? 'none' : 'inline-block'
                                    }"> <!--we hide the line if its too close to the currentprice line -->
                         <span class="price">{{ price }}</span>
                       </div>
                       <div class="priceLine currentPrice"
                            :style="{'top': getCandleTopPosition(candlesClose)+'%'}">
-                        <span class="price">{{ candlesClose }}</span>
+                        <span class="price"><span class="badge badge-warning">{{ candlesClose }}</span></span>
                       </div>
                     </div>
                     <div v-for="candle in candlesData"
@@ -399,6 +399,14 @@ export default {
 
   #candleChart #chartPrices > .priceLine.currentPrice {
     border-top: 1px dashed lightgray;
+  }
+
+  #candleChart #chartPrices > .priceLine.currentPrice > .price {
+    right:-65px;
+  }
+
+  #candleChart #chartPrices > .priceLine.currentPrice > .price > span {
+    font-size: 100%;
   }
 
   #candleChart #chartPrices > .priceLine.currentPrice > .price::before {
