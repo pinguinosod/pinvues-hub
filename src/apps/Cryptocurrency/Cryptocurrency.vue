@@ -113,6 +113,16 @@
                                     }"></div>
                     </div>
                   </div>
+                  <div id="candleChartVolume">
+                    <div v-for="candle in candlesData"
+                         class="candle">
+                       <div class="VolumeBar"
+                            :style="{
+                                      'height': getCandleVolumeHeight(candle[5])+'%',
+                                      'background-color': getCandleColor(candle)
+                                     }"></div>
+                    </div>
+                  </div>
                 </div>
               </transition>
             </div>
@@ -187,6 +197,9 @@ export default {
     getCandleHeight: function(high,low) {
       return ( (high - low) / (this.candlesHighest - this.candlesLowest) ) * 100;
     },
+    getCandleVolumeHeight: function(volume) {
+      return (volume*100 / this.candlesHighestVoume);
+    },
     getCandleColor: function(candle) {
       return candle[1] > candle[4] ? 'red' : 'green';
     },
@@ -241,6 +254,13 @@ export default {
         if (parseFloat(candle[3]) < lowest) lowest = parseFloat(candle[3]);
       });
       return lowest;
+    },
+    candlesHighestVoume: function() {
+      var highest = parseFloat(this.candlesData[0][5]);
+      this.candlesData.map(function(candle) {
+        if (parseFloat(candle[5]) > highest) highest = parseFloat(candle[5]);
+      });
+      return highest;
     },
     candlesOpen: function() {
       if (this.candlesData.length > 0) return parseFloat(this.candlesData[0][1]);
@@ -302,7 +322,7 @@ export default {
   }
 
   #candleChartContainer {
-    min-height:380px;
+    min-height:480px;
     width: 100%;
     margin-right:auto;
     margin-left:0px;
@@ -317,7 +337,12 @@ export default {
     position: relative;
   }
 
-  #candleChart .candle {
+  #candleChartVolume {
+    height: 70px;
+    position: relative;
+  }
+
+  #candleChart .candle, #candleChartVolume .candle {
     width: 3.2%;
     height: 100%;
     display: inline-block;
@@ -337,6 +362,15 @@ export default {
     position: absolute;
     left: 0;
     min-height: 0.5%;
+  }
+
+  #candleChartVolume .candle .VolumeBar {
+    width: 90%;
+    position: absolute;
+    left: 0;
+    min-height: 0.5%;
+    bottom:0;
+    opacity:0.7;
   }
 
   #candleChart #chartPrices {
