@@ -191,6 +191,28 @@ describe('Cryptocurrency: getCandleHeight() method', () => {
   });
 });
 
+describe('Cryptocurrency: getCandleVolumeHeight() method', () => {
+  it('1161.32614200 => 100', () => {
+    expect(cmp.vm.getCandleVolumeHeight(1161.32614200)).toBe(100);
+  });
+
+  it('1161.32614200/2 => 50', () => {
+    expect(cmp.vm.getCandleVolumeHeight(1161.32614200/2)).toBe(50);
+  });
+
+  it('1161.32614200/4 => 25', () => {
+    expect(cmp.vm.getCandleVolumeHeight(1161.32614200/4)).toBe(25);
+  });
+
+  it('(1161.32614200/4)*3 => 75', () => {
+    expect(cmp.vm.getCandleVolumeHeight((1161.32614200/4)*3)).toBe(75);
+  });
+
+  it('0 => 0', () => {
+    expect(cmp.vm.getCandleVolumeHeight(0)).toBe(0);
+  });
+});
+
 
 describe('Cryptocurrency: getCandleColor() method', () => {
   it('10, 20 => green', () => {
@@ -238,5 +260,123 @@ describe('Cryptocurrency: getCandleTopPosition() method', () => {
 
   it('6850 => 15', () => {
     expect(cmp.vm.getCandleTopPosition(6850)).toBe(15);
+  });
+});
+
+
+describe('Cryptocurrency: higher() method', () => {
+  it('0, 0 => 0', () => {
+    expect(cmp.vm.higher(0, 0)).toBe(0);
+  });
+
+  it('3, 3 => 3', () => {
+    expect(cmp.vm.higher(3, 3)).toBe(3);
+  });
+
+  it('5, 3 => 5', () => {
+    expect(cmp.vm.higher(5, 3)).toBe(5);
+  });
+
+  it('3, 5 => 5', () => {
+    expect(cmp.vm.higher(3, 5)).toBe(5);
+  });
+
+  it('-3, 5 => 5', () => {
+    expect(cmp.vm.higher(-3, 5)).toBe(5);
+  });
+
+  it('-5, 3 => 3', () => {
+    expect(cmp.vm.higher(-5, 3)).toBe(3);
+  });
+
+  it('-3, -2 => -2', () => {
+    expect(cmp.vm.higher(-3, -2)).toBe(-2);
+  });
+
+  it('null, null => null', () => {
+    expect(cmp.vm.higher(null, null)).toBe(null);
+  });
+
+  it('null, 3 => 3', () => {
+    expect(cmp.vm.higher(null, 3)).toBe(3);
+  });
+
+  it('3, null => 3', () => {
+    expect(cmp.vm.higher(3, null)).toBe(3);
+  });
+
+  it('-3, null => null', () => {
+    expect(cmp.vm.higher(-3, null)).toBe(null);
+  });
+});
+
+
+describe('Cryptocurrency: lower() method', () => {
+  it('0, 0 => 0', () => {
+    expect(cmp.vm.lower(0, 0)).toBe(0);
+  });
+
+  it('3, 3 => 3', () => {
+    expect(cmp.vm.lower(3, 3)).toBe(3);
+  });
+
+  it('5, 3 => 5', () => {
+    expect(cmp.vm.lower(5, 3)).toBe(3);
+  });
+
+  it('3, 5 => 5', () => {
+    expect(cmp.vm.lower(3, 5)).toBe(3);
+  });
+
+  it('-3, 5 => 5', () => {
+    expect(cmp.vm.lower(-3, 5)).toBe(-3);
+  });
+
+  it('-5, 3 => 3', () => {
+    expect(cmp.vm.lower(-5, 3)).toBe(-5);
+  });
+
+  it('-3, -2 => -2', () => {
+    expect(cmp.vm.lower(-3, -2)).toBe(-3);
+  });
+
+  it('null, null => null', () => {
+    expect(cmp.vm.lower(null, null)).toBe(null);
+  });
+
+  it('null, 3 => null', () => {
+    expect(cmp.vm.lower(null, 3)).toBe(null);
+  });
+
+  it('3, null => null', () => {
+    expect(cmp.vm.lower(3, null)).toBe(null);
+  });
+
+  it('-3, null => -3', () => {
+    expect(cmp.vm.lower(-3, null)).toBe(-3);
+  });
+});
+
+
+
+describe('Cryptocurrency: computed properties', () => {
+  it('candlesHighest', () => {
+    expect(cmp.vm.candlesHighest).toBe(7000);
+  });
+
+  it('candlesLowest', () => {
+    expect(cmp.vm.candlesLowest).toBe(6000);
+  });
+
+  it('candlesHighestVoume', () => {
+    expect(cmp.vm.candlesHighestVoume).toBe(1161.32614200);
+  });
+
+  it('candlesOpen', () => {
+    expect(cmp.vm.candlesOpen).toBe(6300);
+  });
+
+  it('candlesClose', () => {
+    expect(cmp.vm.candlesClose).toBe(6700);
   });
 });
