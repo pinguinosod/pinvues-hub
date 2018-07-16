@@ -82,7 +82,9 @@ export default {
         exp: 0,
         level: 1,
         hp: 100,
-        mp: 50
+        mp: 50,
+        minAttack: 30,
+        maxAttack: 50
       },
       partner: {
         name: '',
@@ -91,7 +93,9 @@ export default {
         exp: 0,
         level: 1,
         hp: 100,
-        mp: 50
+        mp: 50,
+        minAttack: 30,
+        maxAttack: 50
       },
       stage: 1,
       classes: ['Fighter', 'Mage'],
@@ -104,7 +108,8 @@ export default {
       decision1: 1,
       options2: ['Give him some money', 'Let him go', 'Kill him'],
       decision2: 1,
-      currentlyInBattle: false
+      currentlyInBattle: false,
+      enemies: []
     }
   },
   methods: {
@@ -143,7 +148,7 @@ export default {
         break;
 
         case 5:
-          this.startBattle(1);
+          this.currentlyInBattle = this.startBattle(1);
           return 6;
         break;
 
@@ -181,17 +186,109 @@ export default {
       return currentStage; // a validation failed, stay on the current stage
     },
     startBattle: function(battleN) {
-      this.currentlyInBattle = true;
+      let battleStarted = false;
+
       switch(battleN) {
         case 1: // Young Boy (Tutorial)
+          this.enemies = [{
+                            name: 'Young Boy',
+                            hp: 50,
+                            minAttack: 5,
+                            maxAttack: 10
+                          }];
+          battleStarted = true;
         break;
+
         case 2: // Random (Mountain Path)
+          const mountainPath01Encounters = [
+            [
+              {
+                name: 'Kobold Warrior',
+                hp: 60,
+                minAttack: 5,
+                maxAttack: 10
+              },
+              {
+                name: 'Kobold Archer',
+                hp: 25,
+                minAttack: 20,
+                maxAttack: 40
+              }
+            ],
+            [
+              {
+                name: 'Goblin',
+                hp: 70,
+                minAttack: 10,
+                maxAttack: 20
+              }
+            ]
+          ];
+
+          const rndEnemy = Math.floor(Math.random() * mountainPath01Encounters.length);
+          this.enemies = mountainPath01Encounters[rndEnemy];
+          battleStarted = true;
         break;
+
         case 3: // Random (Mountain Path 2)
+          const mountainPath02Encounters = [
+            [
+              {
+                name: 'Tiny Stone Golem',
+                hp: 90,
+                minAttack: 10,
+                maxAttack: 15
+              },
+              {
+                name: 'Tiny Stone Golem',
+                hp: 90,
+                minAttack: 10,
+                maxAttack: 15
+              }
+            ],
+            [
+              {
+                name: 'Water Elemental',
+                hp: 100,
+                minAttack: 20,
+                maxAttack: 50
+              }
+            ],
+            [
+              {
+                name: 'Wind Elemental',
+                hp: 80,
+                minAttack: 20,
+                maxAttack: 60
+              }
+            ]
+          ];
+
+          const rndEnemy2 = Math.floor(Math.random() * mountainPath02Encounters.length);
+          this.enemies = mountainPath02Encounters[rndEnemy2];
+          battleStarted = true;
         break;
+
         case 4: // Stone Golem and Warlock
+          this.enemies = [
+            {
+              name: 'Electrified Stone Golem',
+              hp: 220,
+              minAttack: 20,
+              maxAttack: 40
+            },
+            {
+              name: 'Black Warlock',
+              hp: 80,
+              minAttack: 40,
+              maxAttack: 80
+            }
+          ];
+          battleStarted = true;
         break;
       }
+
+      return battleStarted;
     }
   },
   mounted: function() {

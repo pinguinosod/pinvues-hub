@@ -33,7 +33,9 @@ describe('Base data', () => {
       exp: 0,
       level: 1,
       hp: 100,
-      mp: 50
+      mp: 50,
+      minAttack: 30,
+      maxAttack: 50
     });
   });
 
@@ -45,7 +47,9 @@ describe('Base data', () => {
       exp: 0,
       level: 1,
       hp: 100,
-      mp: 50
+      mp: 50,
+      minAttack: 30,
+      maxAttack: 50
     });
   });
 
@@ -79,6 +83,10 @@ describe('Base data', () => {
 
   it('Currently In Battle', () => {
     expect(cmp.vm.currentlyInBattle).toBeFalsy();
+  });
+
+  it('Enemies', () => {
+    expect(cmp.vm.enemies).toEqual([]);
   });
 });
 
@@ -146,6 +154,111 @@ describe('Advance Stage', () => {
   it('Advance Stage 5 => 6', () => {
     expect(cmp.vm.advanceStage(5)).toBe(6);
     expect(cmp.vm.currentlyInBattle).toBeTruthy();
+  });
+});
+
+describe('Start Battle', () => {
+  it('Start Battle 1', () => {
+    cmp.vm.startBattle(1);
+    expect(cmp.vm.enemies).toEqual([{
+                                      name: 'Young Boy',
+                                      hp: 50,
+                                      minAttack: 5,
+                                      maxAttack: 10
+                                    }]);
+  });
+
+  it('Start Battle 2', () => {
+    cmp.vm.startBattle(2);
+    // Mountain Path 01 encoutners:
+    const mountainPath01Encounters = [
+      [
+        {
+          name: 'Kobold Warrior',
+          hp: 60,
+          minAttack: 5,
+          maxAttack: 10
+        },
+        {
+          name: 'Kobold Archer',
+          hp: 25,
+          minAttack: 20,
+          maxAttack: 40
+        }
+      ],
+      [
+        {
+          name: 'Lesser Water Elemental',
+          hp: 70,
+          minAttack: 10,
+          maxAttack: 30
+        }
+      ],
+      [
+        {
+          name: 'Lesser Wind Elemental',
+          hp: 60,
+          minAttack: 15,
+          maxAttack: 40
+        }
+      ]
+    ];
+    expect(mountainPath01Encounters).toContainEqual(cmp.vm.enemies);
+  });
+
+  it('Start Battle 3', () => {
+    cmp.vm.startBattle(3);
+    // Mountain Path 02 encoutners:
+    const mountainPath02Encounters = [
+      [
+        {
+          name: 'Tiny Stone Golem',
+          hp: 90,
+          minAttack: 10,
+          maxAttack: 15
+        },
+        {
+          name: 'Tiny Stone Golem',
+          hp: 90,
+          minAttack: 10,
+          maxAttack: 15
+        }
+      ],
+      [
+        {
+          name: 'Water Elemental',
+          hp: 100,
+          minAttack: 20,
+          maxAttack: 50
+        }
+      ],
+      [
+        {
+          name: 'Wind Elemental',
+          hp: 80,
+          minAttack: 20,
+          maxAttack: 60
+        }
+      ]
+    ];
+    expect(mountainPath02Encounters).toContainEqual(cmp.vm.enemies);
+  });
+
+  it('Start Battle 4', () => {
+    cmp.vm.startBattle(4);
+    expect(cmp.vm.enemies).toEqual([{
+                                      name: 'Electrified Stone Golem',
+                                      hp: 220,
+                                      minAttack: 20,
+                                      maxAttack: 40
+                                    },
+                                    {
+                                      name: 'Black Warlock',
+                                      hp: 80,
+                                      minAttack: 40,
+                                      maxAttack: 80
+                                    }
+                                  ]);
   });
 });
 
