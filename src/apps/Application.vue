@@ -17,6 +17,7 @@
   import fastype from './Fastype/Fastype.vue'
   import sudoku from './Sudoku/Sudoku.vue'
   import cryptocurrency from './Cryptocurrency/Cryptocurrency.vue'
+  import satm from './StormAtTheMountains/SATM.vue'
 
   export default {
     data () {
@@ -33,7 +34,8 @@
       'app-arithmeticus' : arithmeticus,
       'app-fastype' : fastype,
       'app-sudoku' : sudoku,
-      'app-cryptocurrency' : cryptocurrency
+      'app-cryptocurrency' : cryptocurrency,
+      'app-satm' : satm
     }
   }
 </script>

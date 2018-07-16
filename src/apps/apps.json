@@ -22,5 +22,11 @@
     "description": "Cryptocurrency charts.",
     "author": "PinguinoSod",
     "url": "cryptocurrency"
+  },
+  {
+    "name": "Storm At The Mountains",
+    "description": "Text based fantasy RPG game.",
+    "author": "PinguinoSod",
+    "url": "satm"
   }
 ]
