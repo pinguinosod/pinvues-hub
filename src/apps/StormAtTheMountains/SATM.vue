@@ -217,10 +217,18 @@ export default {
             ],
             [
               {
-                name: 'Goblin',
+                name: 'Lesser Water Elemental',
                 hp: 70,
                 minAttack: 10,
-                maxAttack: 20
+                maxAttack: 30
+              }
+            ],
+            [
+              {
+                name: 'Lesser Wind Elemental',
+                hp: 60,
+                minAttack: 15,
+                maxAttack: 40
               }
             ]
           ];
