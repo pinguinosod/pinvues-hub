@@ -262,6 +262,84 @@ describe('Start Battle', () => {
   });
 });
 
+describe ('Turns', () => {
+  it('endTurn() 1 time', () => {
+    cmp.vm.endTurn();
+    expect(cmp.vm.activeCharacterIndex).toBe(1);
+  });
+
+  it('endTurn() 2 times', () => {
+    cmp.vm.endTurn();
+    cmp.vm.endTurn();
+    expect(cmp.vm.activeCharacterIndex).toBe(0);
+  });
+
+  it('endTurn() 3 times', () => {
+    cmp.vm.endTurn();
+    cmp.vm.endTurn();
+    cmp.vm.endTurn();
+    expect(cmp.vm.activeCharacterIndex).toBe(1);
+  });
+});
+
+describe ('Computed Things', () => {
+  it('yourParty', () => {
+    expect(cmp.vm.yourParty).toEqual([cmp.vm.playerCharacter, cmp.vm.partner]);
+  });
+
+  it('activeCharacter 0', () => {
+    cmp.vm.activeCharacterIndex = 0;
+    expect(cmp.vm.activeCharacter).toEqual(cmp.vm.playerCharacter);
+  });
+
+  it('activeCharacter 1', () => {
+    cmp.vm.activeCharacterIndex = 1;
+    expect(cmp.vm.activeCharacter).toEqual(cmp.vm.partner);
+  });
+
+  it('aliveEnemies alive', () => {
+    cmp.vm.startBattle(2);
+    expect(cmp.vm.aliveEnemies).toEqual(cmp.vm.enemies);
+  });
+
+  it('aliveEnemies 1 dead', () => {
+    cmp.vm.startBattle(2);
+    cmp.vm.enemies[0].hp = 0;
+    if (cmp.vm.enemies.length == 2) {
+      expect(cmp.vm.aliveEnemies).toEqual(cmp.vm.enemies[1]);
+    }
+    else {
+      expect(cmp.vm.aliveEnemies).toEqual([]);
+    }
+  });
+});
+
+describe('Combat Actions', () => {
+  it('Attack', () => {
+    cmp.vm.startBattle(1);
+    const oldHp = cmp.vm.enemies[0].hp;
+    cmp.vm.attack(cmp.vm.playerCharacter, cmp.vm.enemies[0]);
+    expect(cmp.vm.enemies[0].hp).toBeLessThan(oldHp);
+  });
+
+  it('battleAttack', () => {
+    cmp.vm.startBattle(2);
+    const oldEnemiesHp = cmp.vm.enemies.reduce(function(accumulatedHp, enemy) {
+      return accumulatedHp + enemy.hp;
+    }, 0);
+    cmp.vm.battleAttack();
+    const enemiesHp = cmp.vm.enemies.reduce(function(accumulatedHp, enemy) {
+      return accumulatedHp + enemy.hp;
+    }, 0);
+    expect(enemiesHp).toBeLessThan(oldEnemiesHp);
+  });
+
+  it('battleWait', () => {
+    cmp.vm.battleWait();
+    expect(cmp.vm.activeCharacterIndex).toBe(1);
+  });
+});
+
 /* 1.
 Name: [____________]
 Gender: [Male, Female, Other]
