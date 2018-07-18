@@ -97,6 +97,7 @@
 </template>
 
 <script>
+import encounters from './encounters.json'
 
 export default {
   data: function() {
@@ -137,7 +138,8 @@ export default {
       decision2: 1,
       currentlyInBattle: false,
       enemies: [],
-      activeCharacterIndex: 0
+      activeCharacterIndex: 0,
+      encounters: encounters
     }
   },
   methods: {
@@ -216,110 +218,34 @@ export default {
     startBattle: function(battleN) {
       let battleStarted = false;
 
+      // I am using JSON.stringify and JSON.parse,
+      // because I want to make a copy of the enemies,
+      // and not reference them from the encounters.
+
       switch(battleN) {
         case 1: // Young Boy (Tutorial)
-          this.enemies = [{
-                            name: 'Young Boy',
-                            hp: 50,
-                            minAttack: 5,
-                            maxAttack: 10
-                          }];
+          this.enemies = JSON.parse(JSON.stringify(this.encounters[0][0]));
           battleStarted = true;
         break;
 
         case 2: // Random (Mountain Path)
-          const mountainPath01Encounters = [
-            [
-              {
-                name: 'Kobold Warrior',
-                hp: 60,
-                minAttack: 5,
-                maxAttack: 10
-              },
-              {
-                name: 'Kobold Archer',
-                hp: 25,
-                minAttack: 20,
-                maxAttack: 40
-              }
-            ],
-            [
-              {
-                name: 'Lesser Water Elemental',
-                hp: 70,
-                minAttack: 10,
-                maxAttack: 30
-              }
-            ],
-            [
-              {
-                name: 'Lesser Wind Elemental',
-                hp: 60,
-                minAttack: 15,
-                maxAttack: 40
-              }
-            ]
-          ];
+          const mountainPath01Encounters = this.encounters[1];
 
           const rndEnemy = Math.floor(Math.random() * mountainPath01Encounters.length);
-          this.enemies = mountainPath01Encounters[rndEnemy];
+          this.enemies = JSON.parse(JSON.stringify(mountainPath01Encounters[rndEnemy]));
           battleStarted = true;
         break;
 
         case 3: // Random (Mountain Path 2)
-          const mountainPath02Encounters = [
-            [
-              {
-                name: 'Tiny Stone Golem',
-                hp: 90,
-                minAttack: 10,
-                maxAttack: 15
-              },
-              {
-                name: 'Tiny Stone Golem',
-                hp: 90,
-                minAttack: 10,
-                maxAttack: 15
-              }
-            ],
-            [
-              {
-                name: 'Water Elemental',
-                hp: 100,
-                minAttack: 20,
-                maxAttack: 50
-              }
-            ],
-            [
-              {
-                name: 'Wind Elemental',
-                hp: 80,
-                minAttack: 20,
-                maxAttack: 60
-              }
-            ]
-          ];
+          const mountainPath02Encounters = this.encounters[2];
 
           const rndEnemy2 = Math.floor(Math.random() * mountainPath02Encounters.length);
-          this.enemies = mountainPath02Encounters[rndEnemy2];
+          this.enemies = JSON.parse(JSON.stringify(mountainPath02Encounters[rndEnemy2]));
           battleStarted = true;
         break;
 
         case 4: // Stone Golem and Warlock
-          this.enemies = [
-            {
-              name: 'Electrified Stone Golem',
-              hp: 220,
-              minAttack: 20,
-              maxAttack: 40
-            },
-            {
-              name: 'Black Warlock',
-              hp: 80,
-              minAttack: 40,
-              maxAttack: 80
-            }
-          ];
+          this.enemies = JSON.parse(JSON.stringify(this.encounters[3][0]));
           battleStarted = true;
         break;
       }
@@ -334,7 +260,7 @@ export default {
       this.endTurn();
     },
     attack: function(attacker, defender) {
-      const dmg = attacker.maxAttack- attacker.minAttack;
+      const dmg = attacker.maxAttack - attacker.minAttack;
       defender.hp -= dmg;
       this.endTurn();
     },

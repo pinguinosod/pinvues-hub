@@ -306,7 +306,7 @@ describe ('Computed Things', () => {
     cmp.vm.startBattle(2);
     cmp.vm.enemies[0].hp = 0;
     if (cmp.vm.enemies.length == 2) {
-      expect(cmp.vm.aliveEnemies).toEqual(cmp.vm.enemies[1]);
+      expect(cmp.vm.aliveEnemies).toEqual([cmp.vm.enemies[1]]);
     }
     else {
       expect(cmp.vm.aliveEnemies).toEqual([]);
