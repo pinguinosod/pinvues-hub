@@ -35,29 +35,13 @@
     </div>
 
     <div v-else-if="stage == 6">
-      <div v-if="currentlyInBattle" class="row">
-        <div id="yourParty" class="col-6">
-          <div class="characterCard" v-for="friendlyCharacter in yourParty">
-            <h4>{{ friendlyCharacter.name }}</h4>
-            <span class="hp">{{ friendlyCharacter.hp }}</span>
-          </div>
-        </div>
-
-        <div id="enemyParty" class="col-6">
-          <div :class="{ deadChar: enemyCharacter.hp <=0 }" class="characterCard" v-for="enemyCharacter in enemies">
-            <h4>{{ enemyCharacter.name }}</h4>
-            <span class="hp">{{ enemyCharacter.hp > 0 ? enemyCharacter.hp : 0 }}</span>
-          </div>
-        </div>
-
-        <div id="actionBar">
-          It is {{ activeCharacter.name }}'s turn.
-          Action:
-          <button class="btn btn-sm btn-primary" @click="battleAttack()">Attack</button>
-          <button class="btn btn-sm btn-default" @click="battleWait()">Wait</button>
-        </div>
-
-        <div id="combatLog"></div>
+      <div v-if="currentlyInBattle">
+        <app-battle :yourParty="yourParty"
+                    :enemies="enemies"
+                    :activeCharacter="activeCharacter"
+                    @battleAttack="battleAttack()"
+                    @battleWait="battleWait()">
+        </app-battle>
       </div>
       <div v-else>
         You defeated your foes.
@@ -65,30 +49,92 @@
     </div>
 
     <div v-else-if="stage == 7">
+      <i>You retrieve the old woman's bag.</i><br>
+      <b>Young Boy:</b> Please don't kill me, I will never steal again, I promise,
+      my mom is dying, she is ill, she needs medicine, I wanted to buy it for her,
+      please forgive me.<br>
+      The young boy is begging for mercy:
+      <select v-model="decision2"><option :value="(index+1)" v-for="(decision, index) in options2">{{decision}}</option></select>
     </div>
 
     <div v-else-if="stage == 8">
+      <i v-if="decision2 == 1">You give some money to the Young Boy.<br></i>
+      <i v-else-if="decision2 == 2">You kick Young Boy's ass and let him go.<br></i>
+      <i v-else-if="decision2 == 3">You kill the Young Boy.<br></i>
+      <i>You give the bag back to the old woman.<br></i>
+      <b>Old Woman:</b> May the goddess Leda bless your kind souls.
     </div>
 
     <div v-else-if="stage == 9">
+      You reach the base of the mountains, there is a thunderstorm here.<br>
+      The strong winds and the heavy rain make the journey harder.<br>
+      The noise of the thunders startles you every time.<br>
+      The cold breeze on your face makes your nose freeze.<br>
+      The water of the rain is going down by path you are following.
     </div>
 
     <div v-else-if="stage == 10">
+      <div v-if="currentlyInBattle">
+        <app-battle :yourParty="yourParty"
+                    :enemies="enemies"
+                    :activeCharacter="activeCharacter"
+                    @battleAttack="battleAttack()"
+                    @battleWait="battleWait()">
+        </app-battle>
+      </div>
+      <div v-else>
+        You defeated your foes.
+      </div>
     </div>
 
     <div v-else-if="stage == 11">
+      As you are getting closer to the center of the mountains.<br>
+      You notice that most lightnings are striking in the center of the mountains.
     </div>
 
     <div v-else-if="stage == 12">
+      <div v-if="currentlyInBattle">
+        <app-battle :yourParty="yourParty"
+                    :enemies="enemies"
+                    :activeCharacter="activeCharacter"
+                    @battleAttack="battleAttack()"
+                    @battleWait="battleWait()">
+        </app-battle>
+      </div>
+      <div v-else>
+        You defeated your foes.
+      </div>
     </div>
 
     <div v-else-if="stage == 13">
+      You reach the center of the mountains.<br>
+      You see an enormous humanoid body made from stone, it is a Stone Golem.<br>
+      It is standing there without moving.<br>
+      It is getting struck by most of the storm lightnings.<br>
+      It doesn't seem get affected by them.<br>
+      Behind it you spot a man wearing a black robe, it is a Warlock.<br>
+      He is constantly moving his hands in a recurring pattern.<br>
+      He has a fixed gaze and doesn't seem to have noticed your presence.<br>
+      He suddenly he stop moving his hands, he stares directly at you.<br>
+      The stone golem starts to move towards you.
     </div>
 
     <div v-else-if="stage == 14">
+      <div v-if="currentlyInBattle">
+        <app-battle :yourParty="yourParty"
+                    :enemies="enemies"
+                    :activeCharacter="activeCharacter"
+                    @battleAttack="battleAttack()"
+                    @battleWait="battleWait()">
+        </app-battle>
+      </div>
+      <div v-else>
+        You defeated your foes.
+      </div>
     </div>
 
     <div v-else-if="stage == 15">
+      <b><i>The storm at the mountains has stopped.</i></b>
     </div>
 
     <hr>
@@ -97,7 +143,8 @@
 </template>
 
 <script>
-import encounters from './encounters.json'
+import encounters from './encounters.json';
+import battle from './Battle.vue';
 
 export default {
   data: function() {
@@ -187,30 +234,42 @@ export default {
         break;
 
         case 7:
+          return 8;
         break;
 
         case 8:
+          return 9;
         break;
 
         case 9:
+          this.currentlyInBattle = this.startBattle(2);
+          return 10;
         break;
 
         case 10:
+          if (!this.currentlyInBattle) return 11;
         break;
 
         case 11:
+          this.currentlyInBattle = this.startBattle(3);
+          return 12;
         break;
 
         case 12:
+          if (!this.currentlyInBattle) return 13;
         break;
 
         case 13:
+          this.currentlyInBattle = this.startBattle(4);
+          return 14;
         break;
 
         case 14:
+          if (!this.currentlyInBattle) return 15;
         break;
 
         case 15:
+          return 1;
         break;
       }
       return currentStage; // a validation failed, stay on the current stage
@@ -271,6 +330,10 @@ export default {
       else {
         this.activeCharacterIndex += 1;
       }
+
+      if (this.aliveEnemies.length == 0) { // battle is over
+        this.currentlyInBattle = false;
+      }
     }
   },
   computed: {
@@ -289,6 +352,9 @@ export default {
   mounted: function() {
     this.playerCharacter.gender = this.genders[0];
     this.playerCharacter.class = this.classes[0];
+  },
+  components: {
+    'app-battle' : battle
   }
 }
 
