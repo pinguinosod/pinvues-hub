@@ -146,8 +146,10 @@
       <b><i>The storm at the mountains has stopped.</i></b>
     </div>
 
-    <hr>
-    <button class="btn btn-primary" @click="stage = advanceStage(stage)">Ok</button>
+    <template v-if="!currentlyInBattle">
+      <hr>
+      <button class="btn btn-primary" @click="stage = advanceStage(stage)">Ok</button>
+    </template>
   </div>
 </template>
 
