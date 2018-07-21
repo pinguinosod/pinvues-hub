@@ -286,6 +286,47 @@ describe('Start Battle', () => {
 });
 
 describe ('Turns', () => {
+  it('rollInitiative()', ()=> {
+    let turnList = [];
+    cmp.vm.yourParty.map(function(val) {
+      turnList.push(val.name);
+    });
+    cmp.vm.enemies.map(function(val) {
+      turnList.push(val.name);
+    });
+    cmp.vm.rollInitiative();
+    expect(cmp.vm.turnList.sort()).toEqual(turnList.sort());
+  });
+
+  it('rollInitiative() with name and partner name', ()=> {
+    cmp.vm.playerCharacter.name = "Jason";
+    cmp.vm.partner.name = "Jimmy";
+    let turnList = [];
+    cmp.vm.yourParty.map(function(val) {
+      turnList.push(val.name);
+    });
+    cmp.vm.enemies.map(function(val) {
+      turnList.push(val.name);
+    });
+    cmp.vm.rollInitiative();
+    expect(cmp.vm.turnList.sort()).toEqual(turnList.sort());
+  });
+
+  it('rollInitiative() with enemies', ()=> {
+    cmp.vm.playerCharacter.name = "Robert";
+    cmp.vm.partner.name = "Markus";
+    cmp.vm.startBattle(2);
+    let turnList = [];
+    cmp.vm.yourParty.map(function(val) {
+      turnList.push(val.name);
+    });
+    cmp.vm.enemies.map(function(val) {
+      turnList.push(val.name);
+    });
+    cmp.vm.rollInitiative();
+    expect(cmp.vm.turnList.sort()).toEqual(turnList.sort());
+  });
+
   it('endTurn() 1 time', () => {
     cmp.vm.endTurn();
     expect(cmp.vm.activeCharacterIndex).toBe(1);

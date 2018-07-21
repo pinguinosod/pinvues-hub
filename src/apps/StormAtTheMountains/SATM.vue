@@ -202,7 +202,8 @@ export default {
       currentlyInBattle: false,
       enemies: [],
       activeCharacterIndex: 0,
-      encounters: encounters
+      encounters: encounters,
+      turnList: []
     }
   },
   methods: {
@@ -361,6 +362,23 @@ export default {
       if (this.aliveEnemies.length == 0) { // battle is over
         this.currentlyInBattle = false;
       }
+    },
+    shuffle: function(a) {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    },
+    rollInitiative: function() {
+      let turnList = [];
+      this.yourParty.map(function(val) {
+        turnList.push(val.name);
+      });
+      this.enemies.map(function(val) {
+        turnList.push(val.name);
+      });
+      this.turnList = this.shuffle(turnList);
     }
   },
   computed: {
