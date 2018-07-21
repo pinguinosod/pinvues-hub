@@ -33,6 +33,7 @@ describe('Base data', () => {
       exp: 0,
       level: 1,
       hp: 100,
+      hpMax: 100,
       mp: 50,
       minAttack: 30,
       maxAttack: 50
@@ -47,6 +48,7 @@ describe('Base data', () => {
       exp: 0,
       level: 1,
       hp: 100,
+      hpMax: 100,
       mp: 50,
       minAttack: 30,
       maxAttack: 50
@@ -58,7 +60,10 @@ describe('Base data', () => {
   });
 
   it('Classes', () => {
-    expect(cmp.vm.classes).toEqual(['Fighter', 'Mage']);
+    expect(cmp.vm.classes).toEqual([
+              {name:'Fighter', description:'Likes to punch things, pretty tanky.'},
+              {name:'Mage', description:'Likes to cast spells, pretty squishy.'}
+             ]);
   });
 
   it('Genders', () => {
@@ -97,6 +102,13 @@ describe('Generate Partner', () => {
     expect(cmp.vm.partner.name).not.toBe('');
     expect(cmp.vm.partner.class).not.toBe('');
     expect(cmp.vm.partner.gender).not.toBe('');
+  });
+});
+
+describe('Classes', () => {
+  it('getClassByName', () => {
+    expect(cmp.vm.getClassByName(cmp.vm.classes[0].name)).toEqual(cmp.vm.classes[0]);
+    expect(cmp.vm.getClassByName(cmp.vm.classes[1].name)).toEqual(cmp.vm.classes[1]);
   });
 });
 
@@ -163,6 +175,7 @@ describe('Start Battle', () => {
     expect(cmp.vm.enemies).toEqual([{
                                       name: 'Young Boy',
                                       hp: 50,
+                                      hpMax: 50,
                                       minAttack: 5,
                                       maxAttack: 10
                                     }]);
@@ -176,12 +189,14 @@ describe('Start Battle', () => {
         {
           name: 'Kobold Warrior',
           hp: 60,
+          hpMax: 60,
           minAttack: 5,
           maxAttack: 10
         },
         {
           name: 'Kobold Archer',
           hp: 25,
+          hpMax: 25,
           minAttack: 20,
           maxAttack: 40
         }
@@ -190,6 +205,7 @@ describe('Start Battle', () => {
         {
           name: 'Lesser Water Elemental',
           hp: 70,
+          hpMax: 70,
           minAttack: 10,
           maxAttack: 30
         }
@@ -198,6 +214,7 @@ describe('Start Battle', () => {
         {
           name: 'Lesser Wind Elemental',
           hp: 60,
+          hpMax: 60,
           minAttack: 15,
           maxAttack: 40
         }
@@ -214,12 +231,14 @@ describe('Start Battle', () => {
         {
           name: 'Tiny Stone Golem',
           hp: 90,
+          hpMax: 90,
           minAttack: 10,
           maxAttack: 15
         },
         {
           name: 'Tiny Stone Golem',
           hp: 90,
+          hpMax: 90,
           minAttack: 10,
           maxAttack: 15
         }
@@ -228,6 +247,7 @@ describe('Start Battle', () => {
         {
           name: 'Water Elemental',
           hp: 100,
+          hpMax: 100,
           minAttack: 20,
           maxAttack: 50
         }
@@ -236,6 +256,7 @@ describe('Start Battle', () => {
         {
           name: 'Wind Elemental',
           hp: 80,
+          hpMax: 80,
           minAttack: 20,
           maxAttack: 60
         }
@@ -249,12 +270,14 @@ describe('Start Battle', () => {
     expect(cmp.vm.enemies).toEqual([{
                                       name: 'Electrified Stone Golem',
                                       hp: 220,
+                                      hpMax: 200,
                                       minAttack: 20,
                                       maxAttack: 40
                                     },
                                     {
                                       name: 'Black Warlock',
                                       hp: 80,
+                                      hpMax: 80,
                                       minAttack: 40,
                                       maxAttack: 80
                                     }

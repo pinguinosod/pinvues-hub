@@ -4,6 +4,7 @@
       {
         "name": "Young Boy",
         "hp": 50,
+        "hpMax": 50,
         "minAttack": 5,
         "maxAttack": 10
       }
@@ -14,12 +15,14 @@
       {
         "name": "Kobold Warrior",
         "hp": 60,
+        "hpMax": 60,
         "minAttack": 5,
         "maxAttack": 10
       },
       {
         "name": "Kobold Archer",
         "hp": 25,
+        "hpMax": 25,
         "minAttack": 20,
         "maxAttack": 40
       }
@@ -28,6 +31,7 @@
       {
         "name": "Lesser Water Elemental",
         "hp": 70,
+        "hpMax": 70,
         "minAttack": 10,
         "maxAttack": 30
       }
@@ -36,6 +40,7 @@
       {
         "name": "Lesser Wind Elemental",
         "hp": 60,
+        "hpMax": 60,
         "minAttack": 15,
         "maxAttack": 40
       }
@@ -46,12 +51,14 @@
       {
         "name": "Tiny Stone Golem",
         "hp": 90,
+        "hpMax": 90,
         "minAttack": 10,
         "maxAttack": 15
       },
       {
         "name": "Tiny Stone Golem",
         "hp": 90,
+        "hpMax": 90,
         "minAttack": 10,
         "maxAttack": 15
       }
@@ -60,6 +67,7 @@
       {
         "name": "Water Elemental",
         "hp": 100,
+        "hpMax": 100,
         "minAttack": 20,
         "maxAttack": 50
       }
@@ -68,6 +76,7 @@
       {
         "name": "Wind Elemental",
         "hp": 80,
+        "hpMax": 80,
         "minAttack": 20,
         "maxAttack": 60
       }
@@ -78,12 +87,14 @@
       {
         "name": "Electrified Stone Golem",
         "hp": 220,
+        "hpMax": 220,
         "minAttack": 20,
         "maxAttack": 40
       },
       {
         "name": "Black Warlock",
         "hp": 80,
+        "hpMax": 80,
         "minAttack": 40,
         "maxAttack": 80
       }

@@ -2,12 +2,17 @@
   <div>
     <h3>Storm at the Mountains</h3>
     <div v-if="stage == 1">
-      Your name: <input type="text" v-model="playerCharacter.name">
-      Your gender: <select v-model="playerCharacter.gender"><option :value="gender" v-for="gender in genders">{{gender}}</option></select>
+      Your name: <input type="text" class="form-control" v-model="playerCharacter.name"><br>
+      Your gender: <select class="form-control" v-model="playerCharacter.gender">
+                    <option :value="gender" v-for="gender in genders">{{gender}}</option>
+                   </select>
     </div>
 
     <div v-else-if="stage == 2">
-      Your class: <select v-model="playerCharacter.class"><option :value="aclass" v-for="aclass in classes">{{aclass}}</option></select>
+      Your class: <select class="form-control" v-model="playerCharacter.class">
+                   <option :value="aclass.name" v-for="aclass in classes">{{aclass.name}}</option>
+                  </select>
+      <i>{{ getClassByName(playerCharacter.class).description }}</i>
     </div>
 
     <div v-else-if="stage == 3">
@@ -25,7 +30,9 @@
       behind him is an old woman trying to catch him, but she is too slow.<br>
       <b>Old Woman:</b> Please stop him, he stole my bag!!<br>
       What are you going to do?:
-      <select v-model="decision1"><option :value="(index+1)" v-for="(decision, index) in options1">{{decision}}</option></select>
+      <select class="form-control" v-model="decision1">
+        <option :value="(index+1)" v-for="(decision, index) in options1">{{decision}}</option>
+      </select>
     </div>
 
     <div v-else-if="stage == 5">
@@ -54,7 +61,9 @@
       my mom is dying, she is ill, she needs medicine, I wanted to buy it for her,
       please forgive me.<br>
       The young boy is begging for mercy:
-      <select v-model="decision2"><option :value="(index+1)" v-for="(decision, index) in options2">{{decision}}</option></select>
+      <select class="form-control" v-model="decision2">
+        <option :value="(index+1)" v-for="(decision, index) in options2">{{decision}}</option>
+      </select>
     </div>
 
     <div v-else-if="stage == 8">
@@ -157,6 +166,7 @@ export default {
         exp: 0,
         level: 1,
         hp: 100,
+        hpMax: 100,
         mp: 50,
         minAttack: 30,
         maxAttack: 50
@@ -168,12 +178,16 @@ export default {
         exp: 0,
         level: 1,
         hp: 100,
+        hpMax: 100,
         mp: 50,
         minAttack: 30,
         maxAttack: 50
       },
       stage: 1,
-      classes: ['Fighter', 'Mage'],
+      classes: [
+                {name:'Fighter', description:'Likes to punch things, pretty tanky.'},
+                {name:'Mage', description:'Likes to cast spells, pretty squishy.'}
+               ],
       genders: ['Male', 'Female', 'Other'],
       names: [
         ['Markus', 'Stefan', 'Hartwig', 'Maximilian'],
@@ -192,7 +206,7 @@ export default {
   methods: {
     generatePartner: function() {
       const rndClass = Math.floor(Math.random() * this.classes.length);
-      this.partner.class = this.classes[rndClass];
+      this.partner.class = this.classes[rndClass].name;
 
       const rndGender = Math.floor(Math.random() * this.genders.length);
       this.partner.gender = this.genders[rndGender];
@@ -200,6 +214,16 @@ export default {
       const rndNameGender = rndGender > 1 ? Math.floor(Math.random() * 2) : rndGender;
       const rndName = Math.floor(Math.random() * this.names[rndNameGender].length);
       this.partner.name = this.names[rndNameGender][rndName];
+    },
+    getClassByName: function(name) {
+      var classFound = false;
+      this.classes.forEach(function(aclass) {
+        if (aclass.name == name) {
+          classFound = aclass;
+          return true;
+        }
+      });
+      return classFound;
     },
     advanceStage: function(currentStage) {
       switch(currentStage) {
@@ -321,6 +345,7 @@ export default {
     attack: function(attacker, defender) {
       const dmg = attacker.maxAttack - attacker.minAttack;
       defender.hp -= dmg;
+      if (defender.hp < 0) defender.hp = 0;
       this.endTurn();
     },
     endTurn: function() {
@@ -351,7 +376,7 @@ export default {
   },
   mounted: function() {
     this.playerCharacter.gender = this.genders[0];
-    this.playerCharacter.class = this.classes[0];
+    this.playerCharacter.class = this.classes[0].name;
   },
   components: {
     'app-battle' : battle
