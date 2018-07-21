@@ -270,7 +270,7 @@ describe('Start Battle', () => {
     expect(cmp.vm.enemies).toEqual([{
                                       name: 'Electrified Stone Golem',
                                       hp: 220,
-                                      hpMax: 200,
+                                      hpMax: 220,
                                       minAttack: 20,
                                       maxAttack: 40
                                     },
