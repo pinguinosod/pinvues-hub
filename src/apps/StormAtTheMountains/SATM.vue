@@ -196,8 +196,8 @@ export default {
                ],
       genders: ['Male', 'Female', 'Other'],
       names: [
-        ['Markus', 'Stefan', 'Hartwig', 'Maximilian'],
-        ['Sabine', 'Johanna', 'Jacqueline', 'Christina']
+        ['Markus', 'Stefan', 'Hartwig', 'Maximilian', 'Scott', 'Vincent', 'Herman', 'Robert', 'Fernand'],
+        ['Sabine', 'Johanna', 'Jacqueline', 'Christina', 'Claire', 'Natalie', 'Olga', 'Karin', 'Lena']
       ],
       options1: ['Chase him (Tutorial)', 'Let him go (Skip tutorial)'],
       decision1: 1,
