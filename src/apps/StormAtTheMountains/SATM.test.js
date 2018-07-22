@@ -285,7 +285,7 @@ describe('Start Battle', () => {
   });
 });
 
-describe ('Turns', () => {
+describe('Turns', () => {
   it('rollInitiative()', ()=> {
     let turnList = [];
     cmp.vm.yourParty.map(function(val) {
@@ -328,17 +328,26 @@ describe ('Turns', () => {
   });
 
   it('endTurn() 1 time', () => {
+    cmp.vm.playerCharacter.name = 'Joe';
+    cmp.vm.partner.name = 'Rob';
+    cmp.vm.turnList = ['Joe','Rob'];
     cmp.vm.endTurn();
     expect(cmp.vm.activeCharacterIndex).toBe(1);
   });
 
   it('endTurn() 2 times', () => {
+    cmp.vm.playerCharacter.name = 'Joe';
+    cmp.vm.partner.name = 'Rob';
+    cmp.vm.turnList = ['Joe','Rob'];
     cmp.vm.endTurn();
     cmp.vm.endTurn();
     expect(cmp.vm.activeCharacterIndex).toBe(0);
   });
 
   it('endTurn() 3 times', () => {
+    cmp.vm.playerCharacter.name = 'Joe';
+    cmp.vm.partner.name = 'Rob';
+    cmp.vm.turnList = ['Joe','Rob'];
     cmp.vm.endTurn();
     cmp.vm.endTurn();
     cmp.vm.endTurn();
@@ -346,19 +355,66 @@ describe ('Turns', () => {
   });
 });
 
-describe ('Computed Things', () => {
+describe('get Character By Name', () => {
+  it('getCharacterByName() player', () => {
+    cmp.vm.playerCharacter.name = 'Joe';
+    cmp.vm.partner.name = 'Rob';
+    cmp.vm.turnList = ['Joe','Rob'];
+    expect(cmp.vm.getCharacterByName('Joe')).toEqual(cmp.vm.playerCharacter);
+  });
+
+  it('getCharacterByName() partner', () => {
+    cmp.vm.playerCharacter.name = 'Joe';
+    cmp.vm.partner.name = 'Rob';
+    cmp.vm.turnList = ['Joe','Rob'];
+    expect(cmp.vm.getCharacterByName('Rob')).toEqual(cmp.vm.partner);
+  });
+
+  it('getCharacterByName() enemy 1', () => {
+    cmp.vm.playerCharacter.name = 'Joe';
+    cmp.vm.partner.name = 'Rob';
+    cmp.vm.startBattle(4);
+    expect(cmp.vm.getCharacterByName('Electrified Stone Golem')).toEqual(cmp.vm.enemies[0]);
+  });
+
+  it('getCharacterByName() enemy 2', () => {
+    cmp.vm.playerCharacter.name = 'Joe';
+    cmp.vm.partner.name = 'Rob';
+    cmp.vm.startBattle(4);
+    expect(cmp.vm.getCharacterByName('Black Warlock')).toEqual(cmp.vm.enemies[1]);
+  });
+});
+
+describe('restartGame()', () => {
+  it('Reset player name', () => {
+    cmp.vm.playerCharacter.name = 'Joe';
+    cmp.vm.restartGame();
+    expect(cmp.vm.playerCharacter.name).toBe('');
+  });
+
+  it('Reset player hp', () => {
+    cmp.vm.playerCharacter.hp = '33';
+    cmp.vm.restartGame();
+    expect(cmp.vm.playerCharacter.hp).toBe(cmp.vm.playerCharacter.hpMax);
+  });
+
+  it('Reset partner hp', () => {
+    cmp.vm.partner.hp = '44';
+    cmp.vm.restartGame();
+    expect(cmp.vm.partner.hp).toBe(cmp.vm.partner.hpMax);
+  });
+});
+
+describe('Computed Things', () => {
   it('yourParty', () => {
     expect(cmp.vm.yourParty).toEqual([cmp.vm.playerCharacter, cmp.vm.partner]);
   });
 
-  it('activeCharacter 0', () => {
-    cmp.vm.activeCharacterIndex = 0;
-    expect(cmp.vm.activeCharacter).toEqual(cmp.vm.playerCharacter);
-  });
-
-  it('activeCharacter 1', () => {
-    cmp.vm.activeCharacterIndex = 1;
-    expect(cmp.vm.activeCharacter).toEqual(cmp.vm.partner);
+  it('activeCharacter', () => {
+    cmp.vm.playerCharacter.name = 'Joe';
+    cmp.vm.partner.name = 'Rob';
+    cmp.vm.startBattle(4);
+    expect(cmp.vm.activeCharacter).toEqual(cmp.vm.getCharacterByName(cmp.vm.turnList[cmp.vm.activeCharacterIndex]));
   });
 
   it('aliveEnemies alive', () => {

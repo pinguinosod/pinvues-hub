@@ -51,7 +51,8 @@
         </app-battle>
       </div>
       <div v-else>
-        You defeated your foes.
+        <template v-if="aliveEnemies.length==0">You defeated your foes.</template>
+        <template v-else>You are dead.</template>
       </div>
     </div>
 
@@ -92,7 +93,8 @@
         </app-battle>
       </div>
       <div v-else>
-        You defeated your foes.
+        <template v-if="aliveEnemies.length==0">You defeated your foes.</template>
+        <template v-else>You are dead.</template>
       </div>
     </div>
 
@@ -111,7 +113,8 @@
         </app-battle>
       </div>
       <div v-else>
-        You defeated your foes.
+        <template v-if="aliveEnemies.length==0">You defeated your foes.</template>
+        <template v-else>You are dead.</template>
       </div>
     </div>
 
@@ -138,7 +141,8 @@
         </app-battle>
       </div>
       <div v-else>
-        You defeated your foes.
+        <template v-if="aliveEnemies.length==0">You defeated your foes.</template>
+        <template v-else>You are dead.</template>
       </div>
     </div>
 
@@ -229,6 +233,13 @@ export default {
       return classFound;
     },
     advanceStage: function(currentStage) {
+      if (this.playerCharacter.hp == 0
+          && this.partner.hp == 0) {
+        // you lost, start again.
+        this.restartGame();
+        return 1;
+      }
+
       switch(currentStage) {
         case 1:
           if (this.playerCharacter.name != ''
@@ -336,6 +347,11 @@ export default {
         break;
       }
 
+      if (battleStarted) {
+        this.rollInitiative(); // shuffle turn list
+        this.endTurn(); // first one passes and triggers enemy attack if an enemy is 2nd
+      }
+
       return battleStarted;
     },
     battleAttack: function() {
@@ -345,6 +361,15 @@ export default {
     battleWait: function() {
       this.endTurn();
     },
+    enemyAttack: function(enemy) {
+      const rndTarget = Math.floor(Math.random() * 2)+1;
+      if (rndTarget == 1) {
+        this.attack(enemy, this.playerCharacter);
+      }
+      else {
+        this.attack(enemy, this.partner);
+      }
+    },
     attack: function(attacker, defender) {
       const dmg = attacker.maxAttack - attacker.minAttack;
       defender.hp -= dmg;
@@ -352,15 +377,29 @@ export default {
       this.endTurn();
     },
     endTurn: function() {
-      if (this.activeCharacterIndex == this.yourParty.length-1) {
+      if (this.activeCharacterIndex == this.turnList.length-1) {
         this.activeCharacterIndex = 0;
       }
       else {
         this.activeCharacterIndex += 1;
       }
 
-      if (this.aliveEnemies.length == 0) { // battle is over
+      if (this.aliveEnemies.length == 0) { // battle is over, you won
         this.currentlyInBattle = false;
+        return true;
+      }
+      if (this.playerCharacter.hp == 0 && this.partner.hp == 0) { // you lost
+        this.currentlyInBattle = false;
+        return true;
+      }
+
+      let charActive = this.getCharacterByName(this.turnList[this.activeCharacterIndex]);
+      if (charActive.hp == 0) { // character is dead, pass
+        this.endTurn();
+      }
+      else if (charActive.name != this.playerCharacter.name
+          && charActive.name != this.partner.name) { // Its an enemy
+        this.enemyAttack(charActive);
       }
     },
     shuffle: function(a) {
@@ -371,6 +410,7 @@ export default {
       return a;
     },
     rollInitiative: function() {
+      this.activeCharacterIndex = 0; // reset turns
       let turnList = [];
       this.yourParty.map(function(val) {
         turnList.push(val.name);
@@ -379,6 +419,22 @@ export default {
         turnList.push(val.name);
       });
       this.turnList = this.shuffle(turnList);
+    },
+    getCharacterByName: function(name) {
+      // This shouldn't exist, I should use an ID instead
+      var charFound = false;
+      this.yourParty.concat(this.enemies).forEach(function(achar) {
+        if (achar.name == name) {
+          charFound = achar;
+          return true;
+        }
+      });
+      return charFound;
+    },
+    restartGame: function() {
+      this.playerCharacter.name = '';
+      this.playerCharacter.hp = this.playerCharacter.hpMax;
+      this.partner.hp = this.partner.hpMax;
     }
   },
   computed: {
@@ -386,7 +442,7 @@ export default {
       return [this.playerCharacter, this.partner];
     },
     activeCharacter: function() {
-      return this.yourParty[this.activeCharacterIndex];
+      return this.getCharacterByName(this.turnList[this.activeCharacterIndex]);
     },
     aliveEnemies: function() {
       return this.enemies.filter(function(enemy) {
