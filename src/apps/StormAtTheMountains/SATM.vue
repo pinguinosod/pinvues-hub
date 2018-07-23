@@ -254,7 +254,7 @@ export default {
           return 6;
         break;
 
-        case 6:
+        case 6: // Tutorial Battle
           if (!this.currentlyInBattle) return 7;
         break;
 
@@ -271,8 +271,16 @@ export default {
           return 10;
         break;
 
-        case 10:
-          if (!this.currentlyInBattle) return 11;
+        case 10: // 2nd Battle
+          if (!this.currentlyInBattle) {
+            // level requirement to go on
+            if (this.playerCharacter.level + this.partner.level >= 3) {
+              return 11;
+            }
+            else { // keep fighting
+              this.currentlyInBattle = this.startBattle(2);
+            }
+          }
         break;
 
         case 11:
@@ -280,8 +288,16 @@ export default {
           return 12;
         break;
 
-        case 12:
-          if (!this.currentlyInBattle) return 13;
+        case 12: // 3rd Battle
+          if (!this.currentlyInBattle) {
+            // level requirement to go on
+            if (this.playerCharacter.level + this.partner.level >= 4) {
+              return 13;
+            }
+            else { // keep fighting
+              this.currentlyInBattle = this.startBattle(3);
+            }
+          }
         break;
 
         case 13:
@@ -289,11 +305,12 @@ export default {
           return 14;
         break;
 
-        case 14:
+        case 14: // Final Battle
           if (!this.currentlyInBattle) return 15;
         break;
 
         case 15:
+          this.restartGame();
           return 1;
         break;
       }
