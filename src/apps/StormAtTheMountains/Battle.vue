@@ -73,7 +73,7 @@
         let nextExp = this.expMap[level+1];
         let levelUpExpNeeded = nextExp - baseExp;
         let levelUpCurrentExp = exp - baseExp;
-        return (levelUpCurrentExp / levelUpExpNeeded)*100;
+        return Math.floor((levelUpCurrentExp / levelUpExpNeeded)*100);
       },
       getNextLevelExp: function(level) {
         return this.expMap[level+1];

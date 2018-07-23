@@ -364,6 +364,7 @@ export default {
       this.attack(this.activeCharacter, this.aliveEnemies[rndEnemy]);
     },
     battleWait: function() {
+      this.heal(this.activeCharacter);
       this.endTurn();
     },
     enemyAttack: function(enemy) {
@@ -376,7 +377,7 @@ export default {
       }
     },
     attack: function(attacker, defender) {
-      const dmg = attacker.maxAttack - attacker.minAttack;
+      const dmg = attacker.minAttack + Math.floor(Math.random() * (attacker.maxAttack-attacker.minAttack));
       defender.hp -= dmg;
       this.logCombat(`<strong>${attacker.name}</strong> attacks <strong>${defender.name}</strong>, dealing <strong class="text-danger">${dmg}</strong> points of damage.`);
       if (defender.hp <= 0) {
@@ -391,6 +392,14 @@ export default {
         }
       }
       this.endTurn();
+    },
+    heal: function(character) {
+      let healing = 1 + Math.floor(Math.random() * (character.hpMax/10));
+      if (healing + character.hp > character.hpMax) {
+        healing = character.hpMax - character.hp;
+      }
+      character.hp += healing;
+      this.logCombat(`<strong>${character.name}</strong> rests and heals <strong class="text-success">${healing}</strong> health points.`);
     },
     grantExperienceTo: function(character, exp) {
       /*
@@ -410,6 +419,7 @@ export default {
     levelUp: function(character) {
       character.level += 1;
       character.hp = character.hpMax;
+      this.logCombat(`<span class="text-info"><strong>${character.name}</strong> advances to level <strong>${character.level}</strong>.</span>`);
     },
     logCombat: function(entry) {
       this.combatLog.push(entry);
@@ -424,6 +434,10 @@ export default {
 
       if (this.aliveEnemies.length == 0) { // battle is over, you won
         this.currentlyInBattle = false;
+        // your party rest a little after a fight,
+        // this also revives the dead
+        this.heal(this.playerCharacter);
+        this.heal(this.partner);
         return true;
       }
       if (this.playerCharacter.hp == 0 && this.partner.hp == 0) { // you lost
