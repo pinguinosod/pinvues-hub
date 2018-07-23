@@ -405,6 +405,20 @@ describe('restartGame()', () => {
   });
 });
 
+describe('Combat Log', () => {
+  it('logCombat()', () => {
+    cmp.vm.logCombat('something something');
+    expect(cmp.vm.combatLog).toEqual(['something something']);
+  });
+
+  it('logCombat() Multiple entries', () => {
+    cmp.vm.logCombat('anyway the wind blows');
+    cmp.vm.logCombat('doesnt really matter to me');
+    expect(cmp.vm.combatLog).toEqual(['anyway the wind blows', 'doesnt really matter to me']);
+  });
+});
+
+
 describe('Computed Things', () => {
   it('yourParty', () => {
     expect(cmp.vm.yourParty).toEqual([cmp.vm.playerCharacter, cmp.vm.partner]);

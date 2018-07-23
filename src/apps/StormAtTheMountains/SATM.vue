@@ -46,6 +46,7 @@
         <app-battle :yourParty="yourParty"
                     :enemies="enemies"
                     :activeCharacter="activeCharacter"
+                    :combatLog="combatLog"
                     @battleAttack="battleAttack()"
                     @battleWait="battleWait()">
         </app-battle>
@@ -88,6 +89,7 @@
         <app-battle :yourParty="yourParty"
                     :enemies="enemies"
                     :activeCharacter="activeCharacter"
+                    :combatLog="combatLog"
                     @battleAttack="battleAttack()"
                     @battleWait="battleWait()">
         </app-battle>
@@ -108,6 +110,7 @@
         <app-battle :yourParty="yourParty"
                     :enemies="enemies"
                     :activeCharacter="activeCharacter"
+                    :combatLog="combatLog"
                     @battleAttack="battleAttack()"
                     @battleWait="battleWait()">
         </app-battle>
@@ -136,6 +139,7 @@
         <app-battle :yourParty="yourParty"
                     :enemies="enemies"
                     :activeCharacter="activeCharacter"
+                    :combatLog="combatLog"
                     @battleAttack="battleAttack()"
                     @battleWait="battleWait()">
         </app-battle>
@@ -207,7 +211,8 @@ export default {
       enemies: [],
       activeCharacterIndex: 0,
       encounters: encounters,
-      turnList: []
+      turnList: [],
+      combatLog: []
     }
   },
   methods: {
@@ -349,6 +354,7 @@ export default {
 
       if (battleStarted) {
         this.rollInitiative(); // shuffle turn list
+        this.combatLog = []; // clear combat log
         this.endTurn(); // first one passes and triggers enemy attack if an enemy is 2nd
       }
 
@@ -373,8 +379,15 @@ export default {
     attack: function(attacker, defender) {
       const dmg = attacker.maxAttack - attacker.minAttack;
       defender.hp -= dmg;
-      if (defender.hp < 0) defender.hp = 0;
+      this.logCombat(`<strong>${attacker.name}</strong> attacks <strong>${defender.name}</strong>, dealing <strong class="text-danger">${dmg}</strong> points of damage.`);
+      if (defender.hp < 0) {
+        defender.hp = 0;
+        this.logCombat(`<span class="text-danger"><strong>${defender.name}</strong> dies.</span>`);
+      }
       this.endTurn();
+    },
+    logCombat: function(entry) {
+      this.combatLog.push(entry);
     },
     endTurn: function() {
       if (this.activeCharacterIndex == this.turnList.length-1) {

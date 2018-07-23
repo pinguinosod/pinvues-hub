@@ -43,13 +43,24 @@
       <button class="btn btn-sm btn-default" @click="$emit('battleWait')">Wait</button>
     </div>
 
-    <div id="combatLog"></div>
+    <div id="combatLog" class="col-12 mt-4">
+      <ul>
+        <transition-group name="swipe-right">
+        <li v-html="entry" v-for="(entry, index) in reversedCombatLog" :key="(reversedCombatLog.length-index)"></li>
+        </transition-group>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
   export default {
-    props:['yourParty','enemies','activeCharacter']
+    props:['yourParty','enemies','activeCharacter','combatLog'],
+    computed: {
+      reversedCombatLog: function() {
+        return this.combatLog.slice().reverse();
+      }
+    }
   }
 </script>
 
@@ -64,5 +75,17 @@
     padding:6px;
     border-radius:5px;
     background-color: #fdd;
+  }
+
+  #combatLog > ul {
+    background-color: #feb;
+    max-height: 140px;
+    overflow-y: auto;
+    padding: 0px 7px 0px 7px;
+    border-radius:6px;
+  }
+
+  #combatLog > ul > li {
+    list-style: none;
   }
 </style>
