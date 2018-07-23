@@ -471,8 +471,16 @@ export default {
     },
     restartGame: function() {
       this.playerCharacter.name = '';
+
+      //hp
       this.playerCharacter.hp = this.playerCharacter.hpMax;
       this.partner.hp = this.partner.hpMax;
+
+      //exp and level
+      this.playerCharacter.exp = 0;
+      this.partner.exp = 0;
+      this.playerCharacter.level = 1;
+      this.partner.level = 1;
     }
   },
   computed: {
