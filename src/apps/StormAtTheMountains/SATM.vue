@@ -42,19 +42,14 @@
     </div>
 
     <div v-else-if="stage == 6">
-      <div v-if="currentlyInBattle">
-        <app-battle :yourParty="yourParty"
-                    :enemies="enemies"
-                    :activeCharacter="activeCharacter"
-                    :combatLog="combatLog"
-                    @battleAttack="battleAttack()"
-                    @battleWait="battleWait()">
-        </app-battle>
-      </div>
-      <div v-else>
-        <template v-if="aliveEnemies.length==0">You defeated your foes.</template>
-        <template v-else>You are dead.</template>
-      </div>
+      <app-battle :currentlyInBattle="currentlyInBattle"
+                  :yourParty="yourParty"
+                  :enemies="enemies"
+                  :activeCharacter="activeCharacter"
+                  :combatLog="combatLog"
+                  @battleAttack="battleAttack()"
+                  @battleWait="battleWait()">
+      </app-battle>
     </div>
 
     <div v-else-if="stage == 7">
@@ -85,19 +80,14 @@
     </div>
 
     <div v-else-if="stage == 10">
-      <div v-if="currentlyInBattle">
-        <app-battle :yourParty="yourParty"
-                    :enemies="enemies"
-                    :activeCharacter="activeCharacter"
-                    :combatLog="combatLog"
-                    @battleAttack="battleAttack()"
-                    @battleWait="battleWait()">
-        </app-battle>
-      </div>
-      <div v-else>
-        <template v-if="aliveEnemies.length==0">You defeated your foes.</template>
-        <template v-else>You are dead.</template>
-      </div>
+      <app-battle :currentlyInBattle="currentlyInBattle"
+                  :yourParty="yourParty"
+                  :enemies="enemies"
+                  :activeCharacter="activeCharacter"
+                  :combatLog="combatLog"
+                  @battleAttack="battleAttack()"
+                  @battleWait="battleWait()">
+      </app-battle>
     </div>
 
     <div v-else-if="stage == 11">
@@ -106,19 +96,14 @@
     </div>
 
     <div v-else-if="stage == 12">
-      <div v-if="currentlyInBattle">
-        <app-battle :yourParty="yourParty"
-                    :enemies="enemies"
-                    :activeCharacter="activeCharacter"
-                    :combatLog="combatLog"
-                    @battleAttack="battleAttack()"
-                    @battleWait="battleWait()">
-        </app-battle>
-      </div>
-      <div v-else>
-        <template v-if="aliveEnemies.length==0">You defeated your foes.</template>
-        <template v-else>You are dead.</template>
-      </div>
+      <app-battle :currentlyInBattle="currentlyInBattle"
+                  :yourParty="yourParty"
+                  :enemies="enemies"
+                  :activeCharacter="activeCharacter"
+                  :combatLog="combatLog"
+                  @battleAttack="battleAttack()"
+                  @battleWait="battleWait()">
+      </app-battle>
     </div>
 
     <div v-else-if="stage == 13">
@@ -135,19 +120,14 @@
     </div>
 
     <div v-else-if="stage == 14">
-      <div v-if="currentlyInBattle">
-        <app-battle :yourParty="yourParty"
-                    :enemies="enemies"
-                    :activeCharacter="activeCharacter"
-                    :combatLog="combatLog"
-                    @battleAttack="battleAttack()"
-                    @battleWait="battleWait()">
-        </app-battle>
-      </div>
-      <div v-else>
-        <template v-if="aliveEnemies.length==0">You defeated your foes.</template>
-        <template v-else>You are dead.</template>
-      </div>
+      <app-battle :currentlyInBattle="currentlyInBattle"
+                  :yourParty="yourParty"
+                  :enemies="enemies"
+                  :activeCharacter="activeCharacter"
+                  :combatLog="combatLog"
+                  @battleAttack="battleAttack()"
+                  @battleWait="battleWait()">
+      </app-battle>
     </div>
 
     <div v-else-if="stage == 15">
@@ -163,6 +143,7 @@
 
 <script>
 import encounters from './encounters.json';
+import expMap from './expMap.json';
 import battle from './Battle.vue';
 
 export default {
@@ -212,7 +193,8 @@ export default {
       activeCharacterIndex: 0,
       encounters: encounters,
       turnList: [],
-      combatLog: []
+      combatLog: [],
+      expMap: expMap
     }
   },
   methods: {
@@ -380,11 +362,33 @@ export default {
       const dmg = attacker.maxAttack - attacker.minAttack;
       defender.hp -= dmg;
       this.logCombat(`<strong>${attacker.name}</strong> attacks <strong>${defender.name}</strong>, dealing <strong class="text-danger">${dmg}</strong> points of damage.`);
-      if (defender.hp < 0) {
+      if (defender.hp <= 0) {
         defender.hp = 0;
         this.logCombat(`<span class="text-danger"><strong>${defender.name}</strong> dies.</span>`);
+        if(defender.expYield > 0) {
+          this.grantExperienceTo(attacker, defender.expYield);
+        }
       }
       this.endTurn();
+    },
+    grantExperienceTo: function(character, exp) {
+      /*
+      if (character.name == this.playerCharacter.name) {
+        this.playerCharacter.exp += exp;
+      }
+      else {
+        this.partner.exp += exp;
+      }
+      */
+      character.exp += exp;
+      if (character.exp >= this.expMap[character.level+1]) {
+        //level up
+        this.levelUp(character);
+      }
+    },
+    levelUp: function(character) {
+      character.level += 1;
+      character.hp = character.hpMax;
     },
     logCombat: function(entry) {
       this.combatLog.push(entry);
