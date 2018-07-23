@@ -385,6 +385,10 @@ export default {
         if(defender.expYield > 0) {
           this.grantExperienceTo(attacker, defender.expYield);
         }
+        if(this.playerCharacter.hp == 0 && this.partner.hp == 0) {
+          // you lost
+          this.logCombat(`<i>You lost.</i>`);
+        }
       }
       this.endTurn();
     },
