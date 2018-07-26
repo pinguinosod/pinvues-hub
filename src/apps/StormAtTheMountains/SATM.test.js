@@ -177,7 +177,8 @@ describe('Start Battle', () => {
                                       hp: 50,
                                       hpMax: 50,
                                       minAttack: 5,
-                                      maxAttack: 10
+                                      maxAttack: 10,
+                                      expYield: 10
                                     }]);
   });
 
@@ -191,14 +192,16 @@ describe('Start Battle', () => {
           hp: 60,
           hpMax: 60,
           minAttack: 5,
-          maxAttack: 10
+          maxAttack: 10,
+          expYield: 20
         },
         {
           name: 'Kobold Archer',
           hp: 25,
           hpMax: 25,
           minAttack: 20,
-          maxAttack: 40
+          maxAttack: 40,
+          expYield: 20
         }
       ],
       [
@@ -207,7 +210,8 @@ describe('Start Battle', () => {
           hp: 70,
           hpMax: 70,
           minAttack: 10,
-          maxAttack: 30
+          maxAttack: 30,
+          expYield: 20
         }
       ],
       [
@@ -216,7 +220,8 @@ describe('Start Battle', () => {
           hp: 60,
           hpMax: 60,
           minAttack: 15,
-          maxAttack: 40
+          maxAttack: 40,
+          expYield: 20
         }
       ]
     ];
@@ -233,14 +238,16 @@ describe('Start Battle', () => {
           hp: 90,
           hpMax: 90,
           minAttack: 10,
-          maxAttack: 15
+          maxAttack: 15,
+          expYield: 10
         },
         {
           name: 'Tiny Stone Golem',
           hp: 90,
           hpMax: 90,
           minAttack: 10,
-          maxAttack: 15
+          maxAttack: 15,
+          expYield: 10
         }
       ],
       [
@@ -249,7 +256,8 @@ describe('Start Battle', () => {
           hp: 100,
           hpMax: 100,
           minAttack: 20,
-          maxAttack: 50
+          maxAttack: 50,
+          expYield: 40
         }
       ],
       [
@@ -258,7 +266,8 @@ describe('Start Battle', () => {
           hp: 80,
           hpMax: 80,
           minAttack: 20,
-          maxAttack: 60
+          maxAttack: 60,
+          expYield: 40
         }
       ]
     ];
@@ -272,14 +281,16 @@ describe('Start Battle', () => {
                                       hp: 220,
                                       hpMax: 220,
                                       minAttack: 20,
-                                      maxAttack: 40
+                                      maxAttack: 40,
+                                      expYield: 100
                                     },
                                     {
                                       name: 'Black Warlock',
                                       hp: 80,
                                       hpMax: 80,
                                       minAttack: 40,
-                                      maxAttack: 80
+                                      maxAttack: 80,
+                                      expYield: 150
                                     }
                                   ]);
   });
@@ -469,6 +480,8 @@ describe('Combat Actions', () => {
   });
 
   it('battleWait', () => {
+    cmp.vm.generatePartner();
+    cmp.vm.rollInitiative();
     cmp.vm.battleWait();
     expect(cmp.vm.activeCharacterIndex).toBe(1);
   });
