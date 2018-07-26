@@ -402,14 +402,6 @@ export default {
       this.logCombat(`<strong>${character.name}</strong> rests and heals <strong class="text-success">${healing}</strong> health points.`);
     },
     grantExperienceTo: function(character, exp) {
-      /*
-      if (character.name == this.playerCharacter.name) {
-        this.playerCharacter.exp += exp;
-      }
-      else {
-        this.partner.exp += exp;
-      }
-      */
       character.exp += exp;
       if (character.exp >= this.expMap[character.level+1]) {
         //level up
