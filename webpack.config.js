@@ -50,7 +50,9 @@ module.exports = {
               'vue-style-loader',
               'css-loader',
               'sass-loader?indentedSyntax'
-            ]
+            ],
+            // you need to specify `i18n` loaders key with `vue-i18n-loader` (https://github.com/kazupon/vue-i18n-loader)
+            i18n: '@kazupon/vue-i18n-loader'
           }
           // other vue-loader options go here
         }

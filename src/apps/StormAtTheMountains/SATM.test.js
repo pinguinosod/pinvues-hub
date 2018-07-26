@@ -10,6 +10,9 @@ beforeEach(() => {
       return {
         mockData: 'hello world'
       }
+    },
+    mocks: {
+      $t: () => {}
     }
   });
 });
@@ -56,7 +59,7 @@ describe('Base data', () => {
   });
 
   it('Stage', () => {
-    expect(cmp.vm.stage).toBe(1);
+    expect(cmp.vm.stage).toBe(0);
   });
 
   it('Classes', () => {

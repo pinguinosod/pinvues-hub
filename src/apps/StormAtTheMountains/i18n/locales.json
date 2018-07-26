@@ -1,0 +1,18 @@
+{
+  "en": {
+    "Language": "Language",
+    "Your name": "Your name",
+    "Your gender": "Your gender",
+    "Male": "Male",
+    "Female": "Female",
+    "Other": "Other"
+  },
+  "es": {
+    "Language": "Lenguaje",
+    "Your name": "Tu nombre",
+    "Your gender": "Tu género",
+    "Male": "Masculino",
+    "Female": "Femenino",
+    "Other": "Otro"
+  }
+}

@@ -1,10 +1,18 @@
+<i18n src='./i18n/locales.json'></i18n>
+
 <template>
   <div>
     <h3>Storm at the Mountains</h3>
+    <div v-if="stage == 0">
+      {{ $t('Language') }}: <select class="form-control" v-model="locale">
+                  <option value="en">English</option>
+                  <option value="es">Español</option>
+                </select>
+    </div>
     <div v-if="stage == 1">
-      Your name: <input type="text" class="form-control" v-model="playerCharacter.name"><br>
-      Your gender: <select class="form-control" v-model="playerCharacter.gender">
-                    <option :value="gender" v-for="gender in genders">{{gender}}</option>
+      {{ $t('Your name') }}: <input type="text" class="form-control" v-model="playerCharacter.name"><br>
+      {{ $t('Your gender') }}: <select class="form-control" v-model="playerCharacter.gender">
+                    <option :value="gender" v-for="gender in genders">{{ $t(gender) }}</option>
                    </select>
     </div>
 
@@ -174,7 +182,7 @@ export default {
         minAttack: 30,
         maxAttack: 50
       },
-      stage: 1,
+      stage: 0,
       classes: [
                 {name:'Fighter', description:'Likes to punch things, pretty tanky.'},
                 {name:'Mage', description:'Likes to cast spells, pretty squishy.'}
@@ -194,7 +202,8 @@ export default {
       encounters: encounters,
       turnList: [],
       combatLog: [],
-      expMap: expMap
+      expMap: expMap,
+      locale: 'en'
     }
   },
   methods: {
@@ -228,6 +237,10 @@ export default {
       }
 
       switch(currentStage) {
+        case 0:
+          return 1;
+        break;
+        
         case 1:
           if (this.playerCharacter.name != ''
               && this.playerCharacter.gender != '') return 2;
@@ -500,6 +513,11 @@ export default {
       return this.enemies.filter(function(enemy) {
         return enemy.hp > 0;
       });
+    }
+  },
+  watch: {
+    locale (val) {
+      this.$i18n.locale = val
     }
   },
   mounted: function() {
