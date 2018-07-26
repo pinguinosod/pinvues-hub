@@ -5,7 +5,67 @@
     "Your gender": "Your gender",
     "Male": "Male",
     "Female": "Female",
-    "Other": "Other"
+    "Other": "Other",
+    "Your class": "Your class",
+    "Fighter": "Fighter",
+    "Mage": "Mage",
+    "Likes to punch things, pretty tanky.": "Likes to punch things, pretty tanky.",
+    "Likes to cast spells, pretty squishy.": "Likes to cast spells, pretty squishy.",
+    "stage3": {
+      "rockFalling": "You see an enormous rock falling from the sky and landing on the mountains area, the impact makes the ground temble.",
+      "thunderstorm": "A heavy thunderstorm starts there.",
+      "offersReward": "Lord Steiner offers a reward for those who go, investigate, and come back with a report.",
+      "takeQuest": "Since you are an adventurer, you decided to take the quest.",
+      "friendsStartJourney": "Your friend {partnerName} knows a way to the center of the mountains, you both gear up and start your journey immediately."
+    },
+    "Old Woman": "Old Woman",
+    "What are you going to do?": "What are you going to do?",
+    "Chase him (Tutorial)": "Chase him (Tutorial)",
+    "Let him go (Skip tutorial)": "Let him go (Skip tutorial)",
+    "stage4": {
+      "youngboyRunning": "While you are heading to the mountains, you see a young boy running with a bag on his hand, behind him is an old woman trying to catch him, but she is too slow.",
+      "stopStoleBag": "Please stop him, he stole my bag!!"
+    },
+    "stage5": {
+      "chaseYBCave": "You chase the young boy until he enters a cave beneath the ruins of an old castle.",
+      "YBCornered": "The cave has no way out, the young boy is cornered.",
+      "fightBack": "He refuses to give the bag back, he wants to fight."
+    },
+    "Young Boy": "Young Boy",
+    "Give him some money": "Give him some money",
+    "Let him go": "Let him go",
+    "Kill him": "Kill him",
+    "stage7": {
+      "retrieveBag": "You retrieve the old woman's bag.",
+      "pleaseDontKillMe": "Please don't kill me, I will never steal again, I promise, my mom is dying, she is ill, she needs medicine, I wanted to buy it for her, please forgive me.",
+      "YBBegging": "The young boy is begging for mercy"
+    },
+    "stage8": {
+      "giveMoneyToYB": "You give some money to the Young Boy.",
+      "letYBGo": "You kick Young Boy's ass and let him go.",
+      "killYB": "You kill the Young Boy.",
+      "giveBagBack": "You give the bag back to the old woman.",
+      "mayLedaBless": "May the goddess Leda bless your kind souls."
+    },
+    "stage9": {
+      "reachBaseMountains": "You reach the base of the mountains, there is a thunderstorm here.",
+      "strongWindsHeavyRain": "The strong winds and the heavy rain make the journey harder.",
+      "noiseOfThunders": "The noise of the thunders startles you every time.",
+      "coldBreeze": "The cold breeze on your face makes your nose freeze.",
+      "waterRain": "The water of the rain is going down by path you are following."
+    },
+    "stage11": {
+      "gettingCloser": "As you are getting closer to the center of the mountains, you notice that most lightnings are striking in the center of the mountains."
+    },
+    "stage13": {
+      "combatStarts": "You reach the center of the mountains.<br>You see an enormous humanoid body made from stone, it is a Stone Golem.<br>It is standing there without moving.<br>It is getting struck by most of the storm lightnings.<br>It doesn't seem get affected by them.<br>Behind it you spot a man wearing a black robe, it is a Warlock.<br>He is constantly moving his hands in a recurring pattern.<br>He has a fixed gaze and doesn't seem to have noticed your presence.<br>He suddenly he stop moving his hands, he stares directly at you.<br>The stone golem starts to move towards you."
+    },
+    "stage15": {
+      "SATMStopped": "The storm at the mountains has stopped."
+    },
+    "attacks": "attacks",
+    "dealing": "dealing",
+    "points of damage": "points of damage"
   },
   "es": {
     "Language": "Lenguaje",

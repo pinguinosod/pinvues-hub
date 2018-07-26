@@ -17,36 +17,33 @@
     </div>
 
     <div v-else-if="stage == 2">
-      Your class: <select class="form-control" v-model="playerCharacter.class">
-                   <option :value="aclass.name" v-for="aclass in classes">{{aclass.name}}</option>
+      {{ $t('Your class') }}: <select class="form-control" v-model="playerCharacter.class">
+                   <option :value="aclass.name" v-for="aclass in classes">{{ $t(aclass.name) }}</option>
                   </select>
-      <i>{{ getClassByName(playerCharacter.class).description }}</i>
+      <i>{{ $t(getClassByName(playerCharacter.class).description) }}</i>
     </div>
 
     <div v-else-if="stage == 3">
-      You see an enormous rock falling from the sky and landing on the mountains area,
-      the impact makes the ground temble.<br>
-      A heavy thunderstorm starts there.<br>
-      Lord Steiner offers a reward for those who go, investigate, and come back with a report.<br>
-      Since you are an adventurer, you decided to take the quest.<br>
-      Your friend {{ partner.name }} knows a way to the center of the mountains,
-      you both gear up and start your journey immediately.
+      {{ $t('stage3.rockFalling') }}<br>
+      {{ $t('stage3.thunderstorm') }}<br>
+      {{ $t('stage3.offersReward') }}<br>
+      {{ $t('stage3.takeQuest') }}<br>
+      {{ $t('stage3.friendsStartJourney', {'partnerName': partner.name}) }}
     </div>
 
     <div v-else-if="stage == 4">
-      While you are heading to the mountains, you see a young boy running with a bag on his hand,
-      behind him is an old woman trying to catch him, but she is too slow.<br>
-      <b>Old Woman:</b> Please stop him, he stole my bag!!<br>
-      What are you going to do?:
+      {{ $t('stage4.youngboyRunning') }}<br>
+      <b>{{ $t('Old Woman') }}:</b> {{ $t('stage4.stopStoleBag') }}<br>
+      {{ $t('What are you going to do?') }}:
       <select class="form-control" v-model="decision1">
-        <option :value="(index+1)" v-for="(decision, index) in options1">{{decision}}</option>
+        <option :value="(index+1)" v-for="(decision, index) in options1">{{ $t(decision) }}</option>
       </select>
     </div>
 
     <div v-else-if="stage == 5">
-      You chase the young boy until he enters a cave beneath the ruins of an old castle.<br>
-      The cave has no way out, the young boy is cornered.<br>
-      He refuses to give the bag back, he wants to fight.
+      {{ $t('stage5.chaseYBCave') }}<br>
+      {{ $t('stage5.YBCornered') }}<br>
+      {{ $t('stage5.fightBack') }}
     </div>
 
     <div v-else-if="stage == 6">
@@ -61,30 +58,28 @@
     </div>
 
     <div v-else-if="stage == 7">
-      <i>You retrieve the old woman's bag.</i><br>
-      <b>Young Boy:</b> Please don't kill me, I will never steal again, I promise,
-      my mom is dying, she is ill, she needs medicine, I wanted to buy it for her,
-      please forgive me.<br>
-      The young boy is begging for mercy:
+      <i>{{ $t('stage7.retrieveBag') }}</i><br>
+      <b>{{ $t('Young Boy') }}:</b> {{ $t('stage7.pleaseDontKillMe') }}<br>
+      {{ $t('stage7.YBBegging') }}:
       <select class="form-control" v-model="decision2">
-        <option :value="(index+1)" v-for="(decision, index) in options2">{{decision}}</option>
+        <option :value="(index+1)" v-for="(decision, index) in options2">{{ $t(decision) }}</option>
       </select>
     </div>
 
     <div v-else-if="stage == 8">
-      <i v-if="decision2 == 1">You give some money to the Young Boy.<br></i>
-      <i v-else-if="decision2 == 2">You kick Young Boy's ass and let him go.<br></i>
-      <i v-else-if="decision2 == 3">You kill the Young Boy.<br></i>
-      <i>You give the bag back to the old woman.<br></i>
-      <b>Old Woman:</b> May the goddess Leda bless your kind souls.
+      <i v-if="decision2 == 1">{{ $t('stage8.giveMoneyToYB') }}<br></i>
+      <i v-else-if="decision2 == 2">{{ $t('stage8.letYBGo') }}<br></i>
+      <i v-else-if="decision2 == 3">{{ $t('stage8.killYB') }}<br></i>
+      <i>{{ $t('stage8.giveBagBack') }}<br></i>
+      <b>{{ $t('Old Woman') }}:</b> {{ $t('stage8.mayLedaBless') }}
     </div>
 
     <div v-else-if="stage == 9">
-      You reach the base of the mountains, there is a thunderstorm here.<br>
-      The strong winds and the heavy rain make the journey harder.<br>
-      The noise of the thunders startles you every time.<br>
-      The cold breeze on your face makes your nose freeze.<br>
-      The water of the rain is going down by path you are following.
+      {{ $t('stage9.reachBaseMountains') }}<br>
+      {{ $t('stage9.strongWindsHeavyRain') }}<br>
+      {{ $t('stage9.noiseOfThunders') }}<br>
+      {{ $t('stage9.coldBreeze') }}<br>
+      {{ $t('stage9.waterRain') }}
     </div>
 
     <div v-else-if="stage == 10">
@@ -98,9 +93,7 @@
       </app-battle>
     </div>
 
-    <div v-else-if="stage == 11">
-      As you are getting closer to the center of the mountains.<br>
-      You notice that most lightnings are striking in the center of the mountains.
+    <div v-else-if="stage == 11" v-html="$t('stage11.gettingCloser')">
     </div>
 
     <div v-else-if="stage == 12">
@@ -114,17 +107,7 @@
       </app-battle>
     </div>
 
-    <div v-else-if="stage == 13">
-      You reach the center of the mountains.<br>
-      You see an enormous humanoid body made from stone, it is a Stone Golem.<br>
-      It is standing there without moving.<br>
-      It is getting struck by most of the storm lightnings.<br>
-      It doesn't seem get affected by them.<br>
-      Behind it you spot a man wearing a black robe, it is a Warlock.<br>
-      He is constantly moving his hands in a recurring pattern.<br>
-      He has a fixed gaze and doesn't seem to have noticed your presence.<br>
-      He suddenly he stop moving his hands, he stares directly at you.<br>
-      The stone golem starts to move towards you.
+    <div v-else-if="stage == 13" v-html="$t('stage13.combatStarts')">
     </div>
 
     <div v-else-if="stage == 14">
@@ -139,7 +122,7 @@
     </div>
 
     <div v-else-if="stage == 15">
-      <b><i>The storm at the mountains has stopped.</i></b>
+      <b><i>{{ $t('stage15.SATMStopped') }}</i></b>
     </div>
 
     <template v-if="!currentlyInBattle">
@@ -240,7 +223,7 @@ export default {
         case 0:
           return 1;
         break;
-        
+
         case 1:
           if (this.playerCharacter.name != ''
               && this.playerCharacter.gender != '') return 2;
