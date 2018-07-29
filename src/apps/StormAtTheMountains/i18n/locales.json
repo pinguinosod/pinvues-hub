@@ -141,8 +141,17 @@
     "stage15": {
       "SATMStopped": "La tormenta en las montañas ha parado."
     },
-    "attacks": "ataca",
+    "attacks": "ataca a",
     "dealing": "haciendo",
-    "points of damage": "puntos de daño"
+    "points of damage": "puntos de daño",
+    "dies": "muere",
+    "You lost": "Has perdido",
+    "rests and heals": "descansa y se sana",
+    "health points": "puntos de vida",
+    "advances to level": "avanza al nivel",
+    "Action": "Acción",
+    "Attack": "Atacar",
+    "Wait": "Esperar",
+    "It is n turn": "Es el turno de <b>{name}</b>."
   }
 }
