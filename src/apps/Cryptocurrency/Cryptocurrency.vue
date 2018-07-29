@@ -150,7 +150,7 @@ export default {
   },
   methods: {
     getCryptos: function() {
-      this.$http.get('http://pinguino.sonet.cl/binance-api/getCryptos.php')
+      this.$http.get('https://pinvue-binance-api.herokuapp.com/getCryptos.php')
       .then(response=> {
         return response.json();
       })
@@ -163,7 +163,7 @@ export default {
     },
     getCandles: function(symbol, chartInterval) {
       this.loadingCandles = true;
-      this.$http.get('http://pinguino.sonet.cl/binance-api/getCandles.php?symbol='+symbol+'&interval='+chartInterval+'&limit=24')
+      this.$http.get('https://pinvue-binance-api.herokuapp.com/getCandles.php?symbol='+symbol+'&interval='+chartInterval+'&limit=24')
       .then(response=> {
         return response.json();
       })
