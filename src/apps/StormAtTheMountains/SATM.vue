@@ -52,6 +52,7 @@
                   :enemies="enemies"
                   :activeCharacter="activeCharacter"
                   :combatLog="combatLog"
+                  :locale="locale"
                   @battleAttack="battleAttack()"
                   @battleWait="battleWait()">
       </app-battle>
@@ -88,6 +89,7 @@
                   :enemies="enemies"
                   :activeCharacter="activeCharacter"
                   :combatLog="combatLog"
+                  :locale="locale"
                   @battleAttack="battleAttack()"
                   @battleWait="battleWait()">
       </app-battle>
@@ -102,6 +104,7 @@
                   :enemies="enemies"
                   :activeCharacter="activeCharacter"
                   :combatLog="combatLog"
+                  :locale="locale"
                   @battleAttack="battleAttack()"
                   @battleWait="battleWait()">
       </app-battle>
@@ -116,6 +119,7 @@
                   :enemies="enemies"
                   :activeCharacter="activeCharacter"
                   :combatLog="combatLog"
+                  :locale="locale"
                   @battleAttack="battleAttack()"
                   @battleWait="battleWait()">
       </app-battle>
@@ -375,16 +379,16 @@ export default {
     attack: function(attacker, defender) {
       const dmg = attacker.minAttack + Math.floor(Math.random() * (attacker.maxAttack-attacker.minAttack));
       defender.hp -= dmg;
-      this.logCombat(`<strong>${attacker.name}</strong> attacks <strong>${defender.name}</strong>, dealing <strong class="text-danger">${dmg}</strong> points of damage.`);
+      this.logCombat(`<strong>${attacker.name}</strong> ${this.$t('attacks')} <strong>${defender.name}</strong>, ${this.$t('dealing')} <strong class="text-danger">${dmg}</strong> ${this.$t('points of damage')}.`);
       if (defender.hp <= 0) {
         defender.hp = 0;
-        this.logCombat(`<span class="text-danger"><strong>${defender.name}</strong> dies.</span>`);
+        this.logCombat(`<span class="text-danger"><strong>${defender.name}</strong> ${this.$t('dies')}.</span>`);
         if(defender.expYield > 0) {
           this.grantExperienceTo(attacker, defender.expYield);
         }
         if(this.playerCharacter.hp == 0 && this.partner.hp == 0) {
           // you lost
-          this.logCombat(`<i>You lost.</i>`);
+          this.logCombat(`<i>${this.$t('You lost')}.</i>`);
         }
       }
       this.endTurn();
@@ -395,7 +399,7 @@ export default {
         healing = character.hpMax - character.hp;
       }
       character.hp += healing;
-      this.logCombat(`<strong>${character.name}</strong> rests and heals <strong class="text-success">${healing}</strong> health points.`);
+      this.logCombat(`<strong>${character.name}</strong> ${this.$t('rests and heals')} <strong class="text-success">${healing}</strong> ${this.$t('health points')}.`);
     },
     grantExperienceTo: function(character, exp) {
       character.exp += exp;
@@ -407,7 +411,7 @@ export default {
     levelUp: function(character) {
       character.level += 1;
       character.hp = character.hpMax;
-      this.logCombat(`<span class="text-info"><strong>${character.name}</strong> advances to level <strong>${character.level}</strong>.</span>`);
+      this.logCombat(`<span class="text-info"><strong>${character.name}</strong> ${this.$t('advances to level')} <strong>${character.level}</strong>.</span>`);
     },
     logCombat: function(entry) {
       this.combatLog.push(entry);

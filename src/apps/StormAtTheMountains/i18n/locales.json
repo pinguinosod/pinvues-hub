@@ -65,7 +65,16 @@
     },
     "attacks": "attacks",
     "dealing": "dealing",
-    "points of damage": "points of damage"
+    "points of damage": "points of damage",
+    "dies": "dies",
+    "You lost": "You lost",
+    "rests and heals": "rests and heals",
+    "health points": "health points",
+    "advances to level": "advances to level",
+    "Action": "Action",
+    "Attack": "Attack",
+    "Wait": "Wait",
+    "It is n turn": "It is <b>{name}</b>'s turn."
   },
   "es": {
     "Language": "Lenguaje",

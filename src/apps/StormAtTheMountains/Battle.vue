@@ -1,3 +1,5 @@
+<i18n src='./i18n/locales.json'></i18n>
+
 <template>
   <div class="row">
     <div class="col-6">
@@ -49,10 +51,13 @@
       </ul>
     </div>
     <div v-if="currentlyInBattle" id="actionBar" class="col-12">
-      It is <b>{{ activeCharacter.name }}</b>'s turn.<br>
-      Action:
-      <button class="btn btn-sm btn-primary" @click="$emit('battleAttack')">Attack</button>
-      <button class="btn btn-sm btn-default" @click="$emit('battleWait')">Wait</button>
+      <div v-html="$t('It is n turn',{name: activeCharacter.name})"></div>
+      <br>
+      <div>
+        {{ $t('Action') }}:
+        <button class="btn btn-sm btn-primary" @click="$emit('battleAttack')">{{ $t('Attack') }}</button>
+        <button class="btn btn-sm btn-default" @click="$emit('battleWait')">{{ $t('Wait') }}</button>
+      </div>
     </div>
   </div>
 </template>
@@ -61,7 +66,7 @@
   import expMap from './expMap.json';
 
   export default {
-    props:['currentlyInBattle', 'yourParty', 'enemies', 'activeCharacter', 'combatLog'],
+    props:['currentlyInBattle', 'yourParty', 'enemies', 'activeCharacter', 'combatLog', 'locale'],
     data: function() {
       return {
         expMap: expMap
@@ -83,6 +88,9 @@
       reversedCombatLog: function() {
         return this.combatLog.slice().reverse();
       }
+    },
+    mounted: function() {
+      this.$i18n.locale = this.locale
     }
   }
 </script>
