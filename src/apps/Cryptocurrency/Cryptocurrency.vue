@@ -145,12 +145,13 @@ export default {
       selectedSymbol: '',
       quoteAssetFilter: '',
       symbolFilter: '',
-      chartInterval: '1h'
+      chartInterval: '1h',
+      binanceApiUrl: 'https://phpinguino.herokuapp.com/binance-api/'
     }
   },
   methods: {
     getCryptos: function() {
-      this.$http.get('http://phpinguino.herokuapp.com/binance-api/symbol.php')
+      this.$http.get(this.binanceApiUrl + 'symbol.php')
       .then(response=> {
         return response.json();
       })
@@ -163,7 +164,7 @@ export default {
     },
     getCandles: function(symbol, chartInterval) {
       this.loadingCandles = true;
-      this.$http.get('http://phpinguino.herokuapp.com/binance-api/candle.php?symbol='+symbol+'&interval='+chartInterval+'&limit=24')
+      this.$http.get(this.binanceApiUrl + 'candle.php?symbol='+symbol+'&interval='+chartInterval+'&limit=24')
       .then(response=> {
         return response.json();
       })
