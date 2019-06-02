@@ -1,4 +1,4 @@
-import { mount } from 'vue-test-utils'
+import { mount } from '@vue/test-utils'
 import Sudoku from '@/apps/Sudoku/Sudoku.vue'
 
 let cmp;

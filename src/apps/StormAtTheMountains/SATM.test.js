@@ -1,4 +1,4 @@
-import { mount } from 'vue-test-utils'
+import { mount } from '@vue/test-utils'
 import SATM from '@/apps/StormAtTheMountains/SATM.vue'
 
 let cmp;

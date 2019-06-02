@@ -1,4 +1,4 @@
-import { mount } from 'vue-test-utils'
+import { mount } from '@vue/test-utils'
 import Fastype from '@/apps/Fastype/Fastype.vue'
 
 let cmp;

@@ -1,4 +1,4 @@
-import { mount } from 'vue-test-utils'
+import { mount } from '@vue/test-utils'
 import Cryptocurrency from '@/apps/Cryptocurrency/Cryptocurrency.vue'
 
 let cmp;

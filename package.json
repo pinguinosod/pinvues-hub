@@ -36,7 +36,6 @@
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.6.10",
-    "vue-test-utils": "^1.0.0-beta.11",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.5.1"
